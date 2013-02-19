@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ public class MainActivity extends Activity {
 	private PaintView paintView;
 	private Context ctx;
 	private Button button_color;
+	private Button button_size;
 	private Button button_pencil;
 	private Button button_line;
 	private Button button_circle;
@@ -30,6 +32,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		paintView = (PaintView) findViewById(R.id.PaintView);
 		button_color = (Button) findViewById(R.id.button_color);
+		button_size = (Button) findViewById(R.id.button_size);
 		button_pencil = (Button) findViewById(R.id.button_pencil);
 		button_line = (Button) findViewById(R.id.button_line);
 		button_circle = (Button) findViewById(R.id.button_circle);
@@ -39,8 +42,11 @@ public class MainActivity extends Activity {
 
 		lastColor = Colors.RED.getColor();
 		lastSize = Sizes.MEDIUM.getSize();
-		doPencil(paintView);
+		
 		button_color.setTextColor(lastColor);
+		button_size.setCompoundDrawablesWithIntrinsicBounds(0, Sizes.MEDIUM.getIcon(), 0, 0);
+		
+		doPencil(paintView);
 	}
 
 	@Override
@@ -62,13 +68,13 @@ public class MainActivity extends Activity {
 	}
 
 	private void doFocus(Button button) {
-		button_pencil.setTextAppearance(ctx, android.R.style.TextAppearance_Small_Inverse);
-		button_line.setTextAppearance(ctx, android.R.style.TextAppearance_Small_Inverse);
-		button_circle.setTextAppearance(ctx, android.R.style.TextAppearance_Small_Inverse);
-		button_rectangle.setTextAppearance(ctx, android.R.style.TextAppearance_Small_Inverse);
-		button_eraser.setTextAppearance(ctx, android.R.style.TextAppearance_Small_Inverse);
+		button_pencil.setTypeface(null, Typeface.NORMAL);
+		button_line.setTypeface(null, Typeface.NORMAL);
+		button_circle.setTypeface(null, Typeface.NORMAL);
+		button_rectangle.setTypeface(null, Typeface.NORMAL);
+		button_eraser.setTypeface(null, Typeface.NORMAL);
 
-		button.setTextAppearance(ctx, android.R.style.TextAppearance_Large_Inverse);
+		button.setTypeface(null, Typeface.BOLD);
 	}
 
 	public void doPencil(View view) {
@@ -110,7 +116,7 @@ public class MainActivity extends Activity {
 	public void doEraser(View view) {
 		paintView.setFigure(Figures.POINT);
 		paintView.setColor(Color.WHITE);
-		paintView.setSize(Sizes.VERYBIG.getSize());
+		paintView.setSize(Sizes.BIG.getSize());
 		button_color.setEnabled(false);
 
 		doFocus(button_eraser);
@@ -132,6 +138,7 @@ public class MainActivity extends Activity {
 			public void onClick(DialogInterface dialog, int item) {
 				lastSize = Sizes.values()[item].getSize();
 				paintView.setSize(lastSize);
+				button_size.setCompoundDrawablesWithIntrinsicBounds(0, Sizes.values()[item].getIcon(), 0, 0);
 			}
 		});
 

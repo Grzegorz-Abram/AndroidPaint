@@ -1,18 +1,18 @@
 package pl.android.androidpaint;
 
 public enum Sizes implements CharSequence {
-	VERYSMALL("Very small", 2),
-	SMALL("Small", 4),
-	MEDIUM("Medium", 10),
-	BIG("Big", 16),
-	VERYBIG("Very big", 22);
+	SMALL("Small", 2, R.drawable.pencil),
+	MEDIUM("Medium", 10, R.drawable.brush),
+	BIG("Big", 20, R.drawable.widebrush);
 
 	private String description;
 	private int size;
+	private int icon;
 
-	Sizes(String description, int size) {
+	Sizes(String description, int size, int icon) {
 		this.description = description;
 		this.size = size;
+		this.icon = icon;
 	}
 
 	@Override
@@ -22,6 +22,10 @@ public enum Sizes implements CharSequence {
 
 	public int getSize() {
 		return size;
+	}
+	
+	public int getIcon() {
+		return icon;
 	}
 
 	@Override

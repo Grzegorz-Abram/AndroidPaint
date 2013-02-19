@@ -16,98 +16,105 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000000" >
+        android:background="#808080" >
 
         <Button
             android:id="@+id/button_pencil"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/point"
             android:onClick="doPencil"
-            android:text="@string/button_pencil" />
+            android:text="@string/button_pencil"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_line"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/line"
             android:onClick="doLine"
-            android:text="@string/button_line" />
+            android:text="@string/button_line"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_circle"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/circle"
             android:onClick="doCircle"
-            android:text="@string/button_circle" />
+            android:text="@string/button_circle"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_rectangle"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/rectangle"
             android:onClick="doRectangle"
-            android:text="@string/button_rectangle" />
+            android:text="@string/button_rectangle"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_eraser"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableTop="@drawable/eraser"
             android:onClick="doEraser"
-            android:text="@string/button_eraser" />
+            android:text="@string/button_eraser"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000000" >
+        android:background="#808080" >
 
         <Button
             android:id="@+id/button_color"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/color"
             android:onClick="doColor"
-            android:text="@string/button_color" />
+            android:text="@string/button_color"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button_size"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/brush"
             android:onClick="doSize"
-            android:text="@string/button_size" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000000" >
+            android:text="@string/button_size"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_undo"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/undo"
             android:onClick="doUndo"
-            android:text="@string/button_undo" />
+            android:text="@string/button_undo"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_clear"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/newfile"
             android:onClick="doClear"
-            android:text="@string/button_clear" />
+            android:text="@string/button_clear"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
