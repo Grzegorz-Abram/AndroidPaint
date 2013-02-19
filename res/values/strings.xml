@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Paint</string>
+    <string name="menu_pencil">Pencil</string>
+    <string name="menu_color">Color</string>
+    <string name="menu_size">Size</string>
+    <string name="menu_eraser_tool">Eraser tool</string>
+	<string name="menu_line">Draw line</string>
+	<string name="menu_circle">Draw circle</string>
+	<string name="menu_rectangle">Draw rectangle</string>
+
+</resources>
