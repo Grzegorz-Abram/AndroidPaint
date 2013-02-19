@@ -1,4 +1,4 @@
-package pl.android.paint;
+package pl.android.androidpaint;
 
 import android.graphics.RectF;
 

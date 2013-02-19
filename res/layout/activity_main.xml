@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <pl.android.paint.MainView
+    <pl.android.androidpaint.MainView
         android:id="@+id/mainView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

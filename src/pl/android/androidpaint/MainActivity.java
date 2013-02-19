@@ -1,5 +1,6 @@
-package pl.android.paint;
+package pl.android.androidpaint;
 
+import pl.android.androidpaint.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;

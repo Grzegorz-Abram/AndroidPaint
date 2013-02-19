@@ -1,4 +1,4 @@
-package pl.android.paint;
+package pl.android.androidpaint;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 		figures = new ArrayList<FiguresToDraw>();
 		paint = new Paint();
 		color = Color.RED;
-		size = 1;
+		size = 4;
 		shape = 1;
 	}
 

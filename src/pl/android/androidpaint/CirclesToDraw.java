@@ -1,4 +1,4 @@
-package pl.android.paint;
+package pl.android.androidpaint;
 
 public class CirclesToDraw {
 
