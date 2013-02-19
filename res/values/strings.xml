@@ -11,5 +11,15 @@
 	<string name="menu_rectangle">Draw rectangle</string>
 	<string name="menu_clear_screen">Clear screen</string>
 	<string name="menu_undo">Undo</string>
+	<string name="menu_about">About</string>
+	<string name="button_pencil">Pencil</string>
+	<string name="button_line">Line</string>
+	<string name="button_circle">Circle</string>
+	<string name="button_rectangle">Rectangle</string>
+	<string name="button_eraser">Eraser</string>
+	<string name="button_undo">Undo</string>
+	<string name="button_clear">Clear screen</string>
+	<string name="button_color">Color</string>
+	<string name="button_size">Size</string>
 
 </resources>

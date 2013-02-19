@@ -1,15 +1,114 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/LinearLayout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <pl.android.androidpaint.MainView
-        android:id="@+id/mainView"
+    <pl.android.androidpaint.PaintView
+        android:id="@+id/PaintView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000" >
+
+        <Button
+            android:id="@+id/button_pencil"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doPencil"
+            android:text="@string/button_pencil" />
+
+        <Button
+            android:id="@+id/button_line"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doLine"
+            android:text="@string/button_line" />
+
+        <Button
+            android:id="@+id/button_circle"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doCircle"
+            android:text="@string/button_circle" />
+
+        <Button
+            android:id="@+id/button_rectangle"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doRectangle"
+            android:text="@string/button_rectangle" />
+
+        <Button
+            android:id="@+id/button_eraser"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doEraser"
+            android:text="@string/button_eraser" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000" >
+
+        <Button
+            android:id="@+id/button_color"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doColor"
+            android:text="@string/button_color" />
+
+        <Button
+            android:id="@+id/button_size"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doSize"
+            android:text="@string/button_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000" >
+
+        <Button
+            android:id="@+id/button_undo"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doUndo"
+            android:text="@string/button_undo" />
+
+        <Button
+            android:id="@+id/button_clear"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doClear"
+            android:text="@string/button_clear" />
+
+    </LinearLayout>
 
 </LinearLayout>

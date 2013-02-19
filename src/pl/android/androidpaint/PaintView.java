@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class MainView extends SurfaceView implements SurfaceHolder.Callback {
+public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private ArrayList<FiguresToDraw> figures;
 	private Paint paint;
@@ -35,14 +35,10 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 	private float circleStopX;
 	private float circleStopY;
 
-	public MainView(Context context, AttributeSet attrs) {
+	public PaintView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		figures = new ArrayList<FiguresToDraw>();
 		paint = new Paint();
-
-		color = Colors.BLACK.getColor();
-		size = Sizes.MEDIUM.getSize();
-		figure = Figures.POINT;
 	}
 
 	@Override
