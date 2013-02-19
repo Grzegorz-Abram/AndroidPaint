@@ -1,5 +1,7 @@
 package pl.android.androidpaint;
 
+import java.util.ArrayList;
+
 import pl.android.androidpaint.R;
 import android.os.Bundle;
 import android.app.Activity;
@@ -57,6 +59,10 @@ public class MainActivity extends Activity {
 			mainView.setShape(Figures.RECTANGLE);
 			menu_pencil_color();
 			menu_pencil_size();
+			break;
+		case R.id.menu_clear_screen:
+			mainView.setFigures(new ArrayList<FiguresToDraw>());
+			mainView.invalidate();
 			break;
 		}
 

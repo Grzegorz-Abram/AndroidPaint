@@ -163,4 +163,8 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 	public void setShape(Figures figure) {
 		this.figure = figure;
 	}
+	
+	public void setFigures(ArrayList<FiguresToDraw> figures) {
+		this.figures = figures;
+	}
 }

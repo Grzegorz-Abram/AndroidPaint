@@ -9,5 +9,6 @@
 	<string name="menu_line">Draw line</string>
 	<string name="menu_circle">Draw circle</string>
 	<string name="menu_rectangle">Draw rectangle</string>
+	<string name="menu_clear_screen">Clear screen</string>
 
 </resources>
