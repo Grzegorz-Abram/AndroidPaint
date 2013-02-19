@@ -1,11 +1,21 @@
 package pl.android.androidpaint;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,7 +71,7 @@ public class MainActivity extends Activity {
 	public void doEraser(View view) {
 		paintView.setFigure(Figures.POINT);
 		paintView.setColor(Color.WHITE);
-		paintView.setSize(Sizes.BIG.getSize());
+		paintView.setSize(lastSize);
 		button_color.setEnabled(false);
 
 		doFocus(button_eraser);
@@ -91,7 +101,23 @@ public class MainActivity extends Activity {
 	}
 
 	public void doOpen(View view) {
+		try {
+			String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
+			Bitmap bitmap = BitmapFactory.decodeFile(path);
 
+			if (bitmap == null) {
+				throw new Exception("Error opening image " + path);
+			}
+
+			bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(), true);
+
+			paintView.undo(Integer.MAX_VALUE);
+			paintView.open(bitmap);
+
+			showMessage("Successfully opened image " + path);
+		} catch (Exception e) {
+			showMessage(e.getMessage());
+		}
 	}
 
 	public void doPencil(View view) {
@@ -113,7 +139,20 @@ public class MainActivity extends Activity {
 	}
 
 	public void doSave(View view) {
+		Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(), Bitmap.Config.ARGB_8888);
+		paintView.draw(new Canvas(bitmap));
 
+		String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
+		File file = new File(path);
+
+		try {
+			file.createNewFile();
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			showMessage("Image saved to " + path);
+		} catch (IOException e) {
+			showMessage(e.getMessage());
+		}
 	}
 
 	public void doSize(View view) {
@@ -176,5 +215,18 @@ public class MainActivity extends Activity {
 		}
 
 		return true;
+	}
+
+	private void showMessage(String message) {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setCancelable(false);
+		ad.setMessage(message);
+		ad.setButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		ad.show();
 	}
 }

@@ -3,6 +3,7 @@ package pl.android.androidpaint;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -34,6 +35,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 	private float circleStartY;
 	private float circleStopX;
 	private float circleStopY;
+	private Bitmap bitmap;
 
 	public PaintView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -43,6 +45,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		if (bitmap != null) {
+			canvas.drawBitmap(bitmap, 0, 0, null);
+		}
+
 		for (FiguresToDraw figure : figures) {
 			paint.setColor(figure.getColor());
 
@@ -161,6 +167,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 		try {
 			if (steps == Integer.MAX_VALUE) {
 				figures.clear();
+				this.bitmap = null;
 			} else {
 				figures.remove(figures.size() - 1);
 			}
@@ -168,5 +175,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 			invalidate();
 		} catch (IndexOutOfBoundsException e) {
 		}
+	}
+
+	public void open(Bitmap bitmap) {
+		this.bitmap = bitmap;
+		invalidate();
 	}
 }
