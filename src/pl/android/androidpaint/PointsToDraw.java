@@ -12,19 +12,19 @@ public class PointsToDraw {
 		this.color = color;
 	}
 
-	public RectF getFigure() {
-		return figure;
-	}
-
-	public void setFigure(RectF figure) {
-		this.figure = figure;
-	}
-
 	public int getColor() {
 		return color;
 	}
 
+	public RectF getFigure() {
+		return figure;
+	}
+
 	public void setColor(int color) {
 		this.color = color;
+	}
+
+	public void setFigure(RectF figure) {
+		this.figure = figure;
 	}
 }

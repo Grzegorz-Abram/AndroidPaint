@@ -16,21 +16,16 @@ public enum Sizes implements CharSequence {
 	}
 
 	@Override
-	public String toString() {
-		return description;
+	public char charAt(int index) {
+		return description.charAt(index);
 	}
 
-	public int getSize() {
-		return size;
-	}
-	
 	public int getIcon() {
 		return icon;
 	}
-
-	@Override
-	public char charAt(int index) {
-		return description.charAt(index);
+	
+	public int getSize() {
+		return size;
 	}
 
 	@Override
@@ -41,5 +36,10 @@ public enum Sizes implements CharSequence {
 	@Override
 	public CharSequence subSequence(int start, int end) {
 		return description.subSequence(start, end);
+	}
+
+	@Override
+	public String toString() {
+		return description;
 	}
 }

@@ -26,7 +26,7 @@
             android:drawableTop="@drawable/point"
             android:onClick="doPencil"
             android:text="@string/button_pencil"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/button_line"
@@ -36,7 +36,7 @@
             android:drawableTop="@drawable/line"
             android:onClick="doLine"
             android:text="@string/button_line"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/button_circle"
@@ -46,7 +46,7 @@
             android:drawableTop="@drawable/circle"
             android:onClick="doCircle"
             android:text="@string/button_circle"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/button_rectangle"
@@ -56,7 +56,7 @@
             android:drawableTop="@drawable/rectangle"
             android:onClick="doRectangle"
             android:text="@string/button_rectangle"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/button_eraser"
@@ -66,7 +66,17 @@
             android:drawableTop="@drawable/eraser"
             android:onClick="doEraser"
             android:text="@string/button_eraser"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_fill"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/fill"
+            android:onClick="doFill"
+            android:text="@string/button_fill"
+            android:textSize="10sp" />
 
     </LinearLayout>
 
@@ -83,7 +93,7 @@
             android:drawableTop="@drawable/color"
             android:onClick="doColor"
             android:text="@string/button_color"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="bold" />
 
         <Button
@@ -94,7 +104,27 @@
             android:drawableTop="@drawable/brush"
             android:onClick="doSize"
             android:text="@string/button_size"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_open"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/open"
+            android:onClick="doOpen"
+            android:text="@string/button_open"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/save"
+            android:onClick="doSave"
+            android:text="@string/button_save"
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/button_undo"
@@ -104,7 +134,7 @@
             android:drawableTop="@drawable/undo"
             android:onClick="doUndo"
             android:text="@string/button_undo"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/button_clear"
@@ -114,7 +144,7 @@
             android:drawableTop="@drawable/newfile"
             android:onClick="doClear"
             android:text="@string/button_clear"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
     </LinearLayout>
 

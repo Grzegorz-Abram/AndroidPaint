@@ -21,5 +21,8 @@
 	<string name="button_clear">Clear</string>
 	<string name="button_color">Color</string>
 	<string name="button_size">Size</string>
+	<string name="button_save">Save</string>
+	<string name="button_fill">Fill</string>
+	<string name="button_open">Open</string>
 
 </resources>

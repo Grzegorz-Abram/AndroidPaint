@@ -19,17 +19,12 @@ public enum Colors implements CharSequence {
 	}
 
 	@Override
-	public String toString() {
-		return description;
+	public char charAt(int index) {
+		return description.charAt(index);
 	}
 
 	public int getColor() {
 		return color;
-	}
-
-	@Override
-	public char charAt(int index) {
-		return description.charAt(index);
 	}
 
 	@Override
@@ -40,5 +35,10 @@ public enum Colors implements CharSequence {
 	@Override
 	public CharSequence subSequence(int start, int end) {
 		return description.subSequence(start, end);
+	}
+
+	@Override
+	public String toString() {
+		return description;
 	}
 }

@@ -16,43 +16,43 @@ public class CirclesToDraw {
 		this.size = size;
 	}
 
-	public int getColor() {
-		return color;
-	}
-
-	public void setColor(int color) {
-		this.color = color;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
+	public float getCircleRadius() {
+		return circleRadius;
 	}
 
 	public float getCircleX() {
 		return circleX;
 	}
 
-	public void setCircleX(float circleX) {
-		this.circleX = circleX;
-	}
-
 	public float getCircleY() {
 		return circleY;
+	}
+
+	public int getColor() {
+		return color;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setCircleRadius(float circleRadius) {
+		this.circleRadius = circleRadius;
+	}
+
+	public void setCircleX(float circleX) {
+		this.circleX = circleX;
 	}
 
 	public void setCircleY(float circleY) {
 		this.circleY = circleY;
 	}
 
-	public float getCircleRadius() {
-		return circleRadius;
+	public void setColor(int color) {
+		this.color = color;
 	}
 
-	public void setCircleRadius(float circleRadius) {
-		this.circleRadius = circleRadius;
+	public void setSize(int size) {
+		this.size = size;
 	}
 }

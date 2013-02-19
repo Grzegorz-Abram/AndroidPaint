@@ -42,21 +42,32 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	@Override
-	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
+	protected void onDraw(Canvas canvas) {
+		for (FiguresToDraw figure : figures) {
+			paint.setColor(figure.getColor());
 
-	}
-
-	@Override
-	public void surfaceCreated(SurfaceHolder arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder arg0) {
-		// TODO Auto-generated method stub
-
+			switch (figure.getFigure()) {
+			case RECTANGLE:
+				paint.setStrokeWidth(figure.getSize() * 2);
+				paint.setStyle(Style.STROKE);
+				canvas.drawRect(figure.getLeft(), figure.getTop(), figure.getRight(), figure.getBottom(), paint);
+				break;
+			case CIRCLE:
+				paint.setStrokeWidth(figure.getSize() * 2);
+				paint.setStyle(Style.STROKE);
+				canvas.drawCircle(figure.getCircleX(), figure.getCircleY(), figure.getCircleRadius(), paint);
+				break;
+			case LINE:
+				paint.setStrokeWidth(figure.getSize() * 2);
+				paint.setStyle(Style.FILL);
+				canvas.drawLines(figure.getPts(), paint);
+				break;
+			case POINT:
+				paint.setStyle(Style.FILL);
+				canvas.drawOval(figure.getBounds(), paint);
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -119,33 +130,31 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 		return true;
 	}
 
-	@Override
-	protected void onDraw(Canvas canvas) {
-		for (FiguresToDraw figure : figures) {
-			paint.setColor(figure.getColor());
+	public void setColor(int color) {
+		this.color = color;
+	}
 
-			switch (figure.getFigure()) {
-			case RECTANGLE:
-				paint.setStrokeWidth(figure.getSize() * 2);
-				paint.setStyle(Style.STROKE);
-				canvas.drawRect(figure.getLeft(), figure.getTop(), figure.getRight(), figure.getBottom(), paint);
-				break;
-			case CIRCLE:
-				paint.setStrokeWidth(figure.getSize() * 2);
-				paint.setStyle(Style.STROKE);
-				canvas.drawCircle(figure.getCircleX(), figure.getCircleY(), figure.getCircleRadius(), paint);
-				break;
-			case LINE:
-				paint.setStrokeWidth(figure.getSize() * 2);
-				paint.setStyle(Style.FILL);
-				canvas.drawLines(figure.getPts(), paint);
-				break;
-			case POINT:
-				paint.setStyle(Style.FILL);
-				canvas.drawOval(figure.getBounds(), paint);
-				break;
-			}
-		}
+	public void setFigure(Figures figure) {
+		this.figure = figure;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	@Override
+	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
+
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder arg0) {
+
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder arg0) {
+
 	}
 
 	public void undo(int steps) {
@@ -159,17 +168,5 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 			invalidate();
 		} catch (IndexOutOfBoundsException e) {
 		}
-	}
-
-	public void setColor(int color) {
-		this.color = color;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	public void setFigure(Figures figure) {
-		this.figure = figure;
 	}
 }

@@ -12,24 +12,24 @@ public class LinesToDraw {
 		this.size = size;
 	}
 
+	public int getColor() {
+		return color;
+	}
+
 	public float[] getPts() {
 		return pts;
 	}
 
-	public void setPts(float[] pts) {
-		this.pts = pts;
-	}
-
-	public int getColor() {
-		return color;
+	public int getSize() {
+		return size;
 	}
 
 	public void setColor(int color) {
 		this.color = color;
 	}
 
-	public int getSize() {
-		return size;
+	public void setPts(float[] pts) {
+		this.pts = pts;
 	}
 
 	public void setSize(int size) {

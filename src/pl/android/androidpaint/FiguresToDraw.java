@@ -16,17 +16,14 @@ public class FiguresToDraw {
 	private int size;
 	private Figures figure;
 
-	public FiguresToDraw(RectF bounds, int color) {
-		this.bounds = bounds;
-		this.color = color;
-		this.figure = Figures.POINT;
-	}
-
-	public FiguresToDraw(float[] pts, int color, int size) {
-		this.pts = pts;
+	public FiguresToDraw(float left, float top, float right, float bottom, int color, int size) {
+		this.left = left;
+		this.top = top;
+		this.right = right;
+		this.bottom = bottom;
 		this.color = color;
 		this.size = size;
-		this.figure = Figures.LINE;
+		this.figure = Figures.RECTANGLE;
 	}
 
 	public FiguresToDraw(float circleX, float circleY, float circleRadius, int color, int size) {
@@ -38,30 +35,29 @@ public class FiguresToDraw {
 		this.figure = Figures.CIRCLE;
 	}
 
-	public FiguresToDraw(float left, float top, float right, float bottom, int color, int size) {
-		this.left = left;
-		this.top = top;
-		this.right = right;
-		this.bottom = bottom;
+	public FiguresToDraw(float[] pts, int color, int size) {
+		this.pts = pts;
 		this.color = color;
 		this.size = size;
-		this.figure = Figures.RECTANGLE;
+		this.figure = Figures.LINE;
 	}
 
-	public float getLeft() {
-		return left;
-	}
-
-	public float getTop() {
-		return top;
-	}
-
-	public float getRight() {
-		return right;
+	public FiguresToDraw(RectF bounds, int color) {
+		this.bounds = bounds;
+		this.color = color;
+		this.figure = Figures.POINT;
 	}
 
 	public float getBottom() {
 		return bottom;
+	}
+
+	public RectF getBounds() {
+		return bounds;
+	}
+
+	public float getCircleRadius() {
+		return circleRadius;
 	}
 
 	public float getCircleX() {
@@ -72,27 +68,31 @@ public class FiguresToDraw {
 		return circleY;
 	}
 
-	public float getCircleRadius() {
-		return circleRadius;
+	public int getColor() {
+		return color;
+	}
+
+	public Figures getFigure() {
+		return figure;
+	}
+
+	public float getLeft() {
+		return left;
 	}
 
 	public float[] getPts() {
 		return pts;
 	}
 
+	public float getRight() {
+		return right;
+	}
+
 	public int getSize() {
 		return size;
 	}
-
-	public RectF getBounds() {
-		return bounds;
-	}
-
-	public int getColor() {
-		return color;
-	}
 	
-	public Figures getFigure() {
-		return figure;
+	public float getTop() {
+		return top;
 	}
 }

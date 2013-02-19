@@ -17,51 +17,51 @@ public class RectanglesToDraw {
 		this.size = size;
 	}
 
+	public float getBottom() {
+		return bottom;
+	}
+
 	public int getColor() {
 		return color;
 	}
 
-	public void setColor(int color) {
-		this.color = color;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-	
 	public float getLeft() {
 		return left;
 	}
 
-	public void setLeft(float left) {
-		this.left = left;
+	public float getRight() {
+		return right;
+	}
+	
+	public int getSize() {
+		return size;
 	}
 
 	public float getTop() {
 		return top;
 	}
 
-	public void setTop(float top) {
-		this.top = top;
+	public void setBottom(float bottom) {
+		this.bottom = bottom;
 	}
 
-	public float getRight() {
-		return right;
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	public void setLeft(float left) {
+		this.left = left;
 	}
 
 	public void setRight(float right) {
 		this.right = right;
 	}
 
-	public float getBottom() {
-		return bottom;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public void setBottom(float bottom) {
-		this.bottom = bottom;
+	public void setTop(float top) {
+		this.top = top;
 	}
 }
