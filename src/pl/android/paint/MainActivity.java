@@ -34,8 +34,8 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.menu_eraser_tool:
 			mainView.setShape(1);
-			mainView.setPencilColor(Color.WHITE);
-			mainView.setPencilSize(50);
+			mainView.setColor(Color.WHITE);
+			mainView.setSize(50);
 			break;
 		case R.id.menu_pencil:
 			mainView.setShape(1);
@@ -63,22 +63,22 @@ public class MainActivity extends Activity {
 	}
 
 	private void menu_pencil_size() {
-		String[] items = { "1", "5", "10" };
+		String[] items = { "Small", "Medium", "Big" };
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-		alertDialogBuilder.setTitle("Pencil size");
+		alertDialogBuilder.setTitle("Size");
 
 		alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				switch (item) {
 				case 0:
-					mainView.setPencilSize(1);
+					mainView.setSize(4);
 					break;
 				case 1:
-					mainView.setPencilSize(5);
+					mainView.setSize(10);
 					break;
 				case 2:
-					mainView.setPencilSize(10);
+					mainView.setSize(16);
 					break;
 				}
 			}
@@ -92,19 +92,19 @@ public class MainActivity extends Activity {
 		String[] items = { "Red", "Green", "Blue" };
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-		alertDialogBuilder.setTitle("Pencil color");
+		alertDialogBuilder.setTitle("Color");
 
 		alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				switch (item) {
 				case 0:
-					mainView.setPencilColor(Color.RED);
+					mainView.setColor(Color.RED);
 					break;
 				case 1:
-					mainView.setPencilColor(Color.GREEN);
+					mainView.setColor(Color.GREEN);
 					break;
 				case 2:
-					mainView.setPencilColor(Color.BLUE);
+					mainView.setColor(Color.BLUE);
 					break;
 				}
 			}

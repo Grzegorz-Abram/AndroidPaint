@@ -15,10 +15,7 @@ import android.view.SurfaceView;
 
 public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 
-	private ArrayList<PointsToDraw> points;
-	private ArrayList<LinesToDraw> lines;
-	private ArrayList<CirclesToDraw> circles;
-	private ArrayList<RectanglesToDraw> rectangles;
+	private ArrayList<FiguresToDraw> figures;
 	private Paint paint;
 	private int color;
 	private int size;
@@ -41,10 +38,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 
 	public MainView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		points = new ArrayList<PointsToDraw>();
-		lines = new ArrayList<LinesToDraw>();
-		circles = new ArrayList<CirclesToDraw>();
-		rectangles = new ArrayList<RectanglesToDraw>();
+		figures = new ArrayList<FiguresToDraw>();
 		paint = new Paint();
 		color = Color.RED;
 		size = 1;
@@ -75,7 +69,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 		case 1:
 			RectF oval = new RectF(event.getX() - this.size, event.getY() - this.size, event.getX() + this.size, event.getY() + this.size);
 
-			points.add(new PointsToDraw(oval, this.color));
+			figures.add(new FiguresToDraw(oval, this.color));
 
 			break;
 		case 2:
@@ -88,7 +82,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 				this.lineStopX = event.getX();
 				this.lineStopY = event.getY();
 
-				lines.add(new LinesToDraw(new float[] { this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY }, this.color, this.size));
+				figures.add(new FiguresToDraw(new float[] { this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY }, this.color, this.size));
 			}
 
 			break;
@@ -106,7 +100,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 				this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
 				this.circleRadius = (float) Math.sqrt(Math.pow(Math.abs(this.circleX - event.getX()), 2) + Math.pow(Math.abs(this.circleY - event.getY()), 2));
 
-				circles.add(new CirclesToDraw(this.circleX, this.circleY, this.circleRadius, this.color, this.size));
+				figures.add(new FiguresToDraw(this.circleX, this.circleY, this.circleRadius, this.color, this.size));
 			}
 
 			break;
@@ -120,7 +114,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 				this.rectRight = event.getX();
 				this.rectBottom = event.getY();
 
-				rectangles.add(new RectanglesToDraw(this.rectLeft, this.rectTop, this.rectRight, this.rectBottom, this.color, this.size));
+				figures.add(new FiguresToDraw(this.rectLeft, this.rectTop, this.rectRight, this.rectBottom, this.color, this.size));
 			}
 
 			break;
@@ -131,39 +125,38 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		for (RectanglesToDraw rectangle : rectangles) {
-			paint.setColor(rectangle.getColor());
-			paint.setStrokeWidth(rectangle.getSize() * 2);
-			paint.setStyle(Style.STROKE);
-			canvas.drawRect(rectangle.getLeft(), rectangle.getTop(), rectangle.getRight(), rectangle.getBottom(), paint);
-		}
+		for (FiguresToDraw figure : figures) {
+			paint.setColor(figure.getColor());
 
-		for (CirclesToDraw circle : circles) {
-			paint.setColor(circle.getColor());
-			paint.setStrokeWidth(circle.getSize() * 2);
-			paint.setStyle(Style.STROKE);
-			canvas.drawCircle(circle.getCircleX(), circle.getCircleY(), circle.getCircleRadius(), paint);
-		}
-
-		for (LinesToDraw line : lines) {
-			paint.setColor(line.getColor());
-			paint.setStrokeWidth(line.getSize() * 2);
-			paint.setStyle(Style.FILL);
-			canvas.drawLines(line.getPts(), paint);
-		}
-
-		for (PointsToDraw point : points) {
-			paint.setColor(point.getColor());
-			paint.setStyle(Style.FILL);
-			canvas.drawOval(point.getFigure(), paint);
+			switch (figure.getFigure()) {
+			case RECTANGLE:
+				paint.setStrokeWidth(figure.getSize() * 2);
+				paint.setStyle(Style.STROKE);
+				canvas.drawRect(figure.getLeft(), figure.getTop(), figure.getRight(), figure.getBottom(), paint);
+				break;
+			case CIRCLE:
+				paint.setStrokeWidth(figure.getSize() * 2);
+				paint.setStyle(Style.STROKE);
+				canvas.drawCircle(figure.getCircleX(), figure.getCircleY(), figure.getCircleRadius(), paint);
+				break;
+			case LINE:
+				paint.setStrokeWidth(figure.getSize() * 2);
+				paint.setStyle(Style.FILL);
+				canvas.drawLines(figure.getPts(), paint);
+				break;
+			case POINT:
+				paint.setStyle(Style.FILL);
+				canvas.drawOval(figure.getBounds(), paint);
+				break;
+			}
 		}
 	}
 
-	public void setPencilColor(int color) {
+	public void setColor(int color) {
 		this.color = color;
 	}
 
-	public void setPencilSize(int size) {
+	public void setSize(int size) {
 		this.size = size;
 	}
 
