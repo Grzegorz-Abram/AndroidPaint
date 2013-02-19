@@ -1,14 +1,11 @@
 package pl.android.androidpaint;
 
-import java.util.ArrayList;
-
-import pl.android.androidpaint.R;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,33 +33,35 @@ public class MainActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.menu_eraser_tool:
-			mainView.setShape(Figures.POINT);
+			mainView.setFigure(Figures.POINT);
 			mainView.setColor(Color.WHITE);
 			mainView.setSize(50);
 			break;
 		case R.id.menu_pencil:
-			mainView.setShape(Figures.POINT);
+			mainView.setFigure(Figures.POINT);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
 		case R.id.menu_line:
-			mainView.setShape(Figures.LINE);
+			mainView.setFigure(Figures.LINE);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
 		case R.id.menu_circle:
-			mainView.setShape(Figures.CIRCLE);
+			mainView.setFigure(Figures.CIRCLE);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
 		case R.id.menu_rectangle:
-			mainView.setShape(Figures.RECTANGLE);
+			mainView.setFigure(Figures.RECTANGLE);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
 		case R.id.menu_clear_screen:
-			mainView.setFigures(new ArrayList<FiguresToDraw>());
-			mainView.invalidate();
+			mainView.undo(Integer.MAX_VALUE);
+			break;
+		case R.id.menu_undo:
+			mainView.undo(1);
 			break;
 		}
 

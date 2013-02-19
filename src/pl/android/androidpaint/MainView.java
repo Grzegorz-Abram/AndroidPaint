@@ -152,6 +152,19 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	public void undo(int steps) {
+		try {
+			if (steps == Integer.MAX_VALUE) {
+				figures.clear();
+			} else {
+				figures.remove(figures.size() - 1);
+			}
+
+			invalidate();
+		} catch (IndexOutOfBoundsException e) {
+		}
+	}
+
 	public void setColor(int color) {
 		this.color = color;
 	}
@@ -160,11 +173,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 		this.size = size;
 	}
 
-	public void setShape(Figures figure) {
+	public void setFigure(Figures figure) {
 		this.figure = figure;
-	}
-	
-	public void setFigures(ArrayList<FiguresToDraw> figures) {
-		this.figures = figures;
 	}
 }

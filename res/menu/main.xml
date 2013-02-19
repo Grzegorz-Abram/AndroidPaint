@@ -5,5 +5,6 @@
     <item android:id="@+id/menu_circle" android:title="@string/menu_circle" android:orderInCategory="4"></item>
     <item android:id="@+id/menu_rectangle" android:title="@string/menu_rectangle" android:orderInCategory="5"></item>
     <item android:id="@+id/menu_clear_screen" android:title="@string/menu_clear_screen" android:orderInCategory="6"></item>
+    <item android:id="@+id/menu_undo" android:title="@string/menu_undo" android:orderInCategory="7"></item>
 
 </menu>
