@@ -64,24 +64,17 @@ public class MainActivity extends Activity {
 	}
 
 	private void menu_pencil_size() {
-		String[] items = { "Small", "Medium", "Big" };
+		String[] items = new String[Sizes.values().length];
+		for (int i = 0; i < Sizes.values().length; i++) {
+			items[i] = (Sizes.values()[i]).toString();
+		}
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("Size");
 
 		alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
-				switch (item) {
-				case 0:
-					mainView.setSize(4);
-					break;
-				case 1:
-					mainView.setSize(10);
-					break;
-				case 2:
-					mainView.setSize(16);
-					break;
-				}
+				mainView.setSize(Sizes.values()[item].size());
 			}
 		});
 
