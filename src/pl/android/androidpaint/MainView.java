@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
@@ -19,7 +18,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 	private Paint paint;
 	private int color;
 	private int size;
-	private int shape;
+	private Figures figure;
 	private float lineStartX;
 	private float lineStartY;
 	private float lineStopX;
@@ -40,9 +39,10 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 		super(context, attrs);
 		figures = new ArrayList<FiguresToDraw>();
 		paint = new Paint();
-		color = Color.RED;
-		size = 4;
-		shape = 1;
+
+		color = Colors.BLACK.getColor();
+		size = Sizes.MEDIUM.getSize();
+		figure = Figures.POINT;
 	}
 
 	@Override
@@ -65,14 +65,14 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		switch (this.shape) {
-		case 1:
+		switch (this.figure) {
+		case POINT:
 			RectF oval = new RectF(event.getX() - this.size, event.getY() - this.size, event.getX() + this.size, event.getY() + this.size);
 
 			figures.add(new FiguresToDraw(oval, this.color));
 
 			break;
-		case 2:
+		case LINE:
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				this.lineStartX = event.getX();
 				this.lineStartY = event.getY();
@@ -86,7 +86,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 			break;
-		case 3:
+		case CIRCLE:
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				this.circleStartX = event.getX();
 				this.circleStartY = event.getY();
@@ -104,7 +104,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 			break;
-		case 4:
+		case RECTANGLE:
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				this.rectLeft = event.getX();
 				this.rectTop = event.getY();
@@ -160,7 +160,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback {
 		this.size = size;
 	}
 
-	public void setShape(int shape) {
-		this.shape = shape;
+	public void setShape(Figures figure) {
+		this.figure = figure;
 	}
 }

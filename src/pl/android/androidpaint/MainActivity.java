@@ -34,27 +34,27 @@ public class MainActivity extends Activity {
 
 		switch (item.getItemId()) {
 		case R.id.menu_eraser_tool:
-			mainView.setShape(1);
+			mainView.setShape(Figures.POINT);
 			mainView.setColor(Color.WHITE);
 			mainView.setSize(50);
 			break;
 		case R.id.menu_pencil:
-			mainView.setShape(1);
+			mainView.setShape(Figures.POINT);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
 		case R.id.menu_line:
-			mainView.setShape(2);
+			mainView.setShape(Figures.LINE);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
 		case R.id.menu_circle:
-			mainView.setShape(3);
+			mainView.setShape(Figures.CIRCLE);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
 		case R.id.menu_rectangle:
-			mainView.setShape(4);
+			mainView.setShape(Figures.RECTANGLE);
 			menu_pencil_color();
 			menu_pencil_size();
 			break;
@@ -64,17 +64,12 @@ public class MainActivity extends Activity {
 	}
 
 	private void menu_pencil_size() {
-		String[] items = new String[Sizes.values().length];
-		for (int i = 0; i < Sizes.values().length; i++) {
-			items[i] = (Sizes.values()[i]).toString();
-		}
-
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("Size");
 
-		alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+		alertDialogBuilder.setItems(Sizes.values(), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
-				mainView.setSize(Sizes.values()[item].size());
+				mainView.setSize(Sizes.values()[item].getSize());
 			}
 		});
 
@@ -83,24 +78,12 @@ public class MainActivity extends Activity {
 	}
 
 	private void menu_pencil_color() {
-		String[] items = { "Red", "Green", "Blue" };
-
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setTitle("Color");
 
-		alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+		alertDialogBuilder.setItems(Colors.values(), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
-				switch (item) {
-				case 0:
-					mainView.setColor(Color.RED);
-					break;
-				case 1:
-					mainView.setColor(Color.GREEN);
-					break;
-				case 2:
-					mainView.setColor(Color.BLUE);
-					break;
-				}
+				mainView.setColor(Colors.values()[item].getColor());
 			}
 		});
 

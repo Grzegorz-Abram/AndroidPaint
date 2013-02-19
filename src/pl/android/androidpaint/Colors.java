@@ -1,18 +1,21 @@
 package pl.android.androidpaint;
 
-public enum Sizes implements CharSequence {
-	VERYSMALL("Very small", 2),
-	SMALL("Small", 4),
-	MEDIUM("Medium", 10),
-	BIG("Big", 16),
-	VERYBIG("Very big", 22);
+import android.graphics.Color;
+
+public enum Colors implements CharSequence {
+	RED("Red", Color.RED),
+	GREEN("Green", Color.GREEN),
+	BLUE("Blue", Color.BLUE),
+	CYAN("Cyan", Color.CYAN),
+	MAGENTA("Magenta", Color.MAGENTA),
+	BLACK("Black", Color.BLACK);
 
 	private String description;
-	private int size;
+	private int color;
 
-	Sizes(String description, int size) {
+	Colors(String description, int color) {
 		this.description = description;
-		this.size = size;
+		this.color = color;
 	}
 
 	@Override
@@ -20,8 +23,8 @@ public enum Sizes implements CharSequence {
 		return description;
 	}
 
-	public int getSize() {
-		return size;
+	public int getColor() {
+		return color;
 	}
 
 	@Override
