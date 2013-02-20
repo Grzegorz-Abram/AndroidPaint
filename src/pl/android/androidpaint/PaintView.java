@@ -6,18 +6,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.os.Environment;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -107,67 +108,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                 canvas.drawPath(figure.getPath(), paint);
                 break;
             }
-        }
-    }
-
-    private void floodFillScanline(int x, int y, int newColor, int oldColor) {
-        if (oldColor == newColor)
-            return;
-        if (detectColor(x, y) != oldColor)
-            return;
-
-        int y1;
-
-        // saveImage();
-
-        // draw current scanline from start position to the top
-        y1 = y;
-        while (y1 < getHeight() && detectColor(x, y1) == oldColor) {
-            bitmap.setPixel(x, y1, newColor);
-            y1++;
-        }
-
-        // saveImage();
-
-        // draw current scanline from start position to the bottom
-        y1 = y - 1;
-        while (y1 >= 0 && detectColor(x, y1) == oldColor) {
-            bitmap.setPixel(x, y1, newColor);
-            y1--;
-        }
-
-        // saveImage();
-
-        // test for new scanlines to the left
-        y1 = y;
-        while (y1 < getHeight() && detectColor(x, y1) == newColor) {
-            if (x > 0 && detectColor(x - 1, y1) == oldColor) {
-                floodFillScanline(x - 1, y1, newColor, oldColor);
-            }
-            y1++;
-        }
-        y1 = y - 1;
-        while (y1 >= 0 && detectColor(x, y1) == newColor) {
-            if (x > 0 && detectColor(x - 1, y1) == oldColor) {
-                floodFillScanline(x - 1, y1, newColor, oldColor);
-            }
-            y1--;
-        }
-
-        // test for new scanlines to the right
-        y1 = y;
-        while (y1 < getHeight() && detectColor(x, y1) == newColor) {
-            if (x < getWidth() - 1 && detectColor(x + 1, y1) == oldColor) {
-                floodFillScanline(x + 1, y1, newColor, oldColor);
-            }
-            y1++;
-        }
-        y1 = y - 1;
-        while (y1 >= 0 && detectColor(x, y1) == newColor) {
-            if (x < getWidth() - 1 && detectColor(x + 1, y1) == oldColor) {
-                floodFillScanline(x + 1, y1, newColor, oldColor);
-            }
-            y1--;
         }
     }
 
@@ -309,14 +249,19 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             break;
         case FILL:
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                int oldColor = detectColor((int) event.getX(), (int) event.getY());
-                floodFillScanline((int) event.getX(), (int) event.getY(), this.color, oldColor);
-
-                if (oldColor == Color.RED) {
-                    Log.d("COLOR", "RED");
-                } else {
-                    Log.d("COLOR", "OTHER");
+                while (figures.size() > 0) {
+                    figuresToFlat.add(figures.remove(0));
                 }
+
+                Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+                draw(new Canvas(bitmap));
+                this.bitmap = bitmap;
+
+                figuresToFlat.clear();
+
+                int oldColor = bitmap.getPixel((int) event.getX(), (int) event.getY());
+
+                this.bitmap = FloodFill(bitmap, new Point((int) event.getX(), (int) event.getY()), oldColor, this.color);
             }
 
             break;
@@ -347,6 +292,41 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
+    private Bitmap FloodFill(Bitmap bmp, Point pt, int targetColor, int replacementColor) {
+        Queue<Point> q = new LinkedList<Point>();
+        q.add(pt);
+        while (q.size() > 0) {
+            Point n = q.poll();
+            if (bmp.getPixel(n.x, n.y) != targetColor)
+                continue;
+
+            Point w = n, e = new Point(n.x + 1, n.y);
+            while ((w.x > 0) && (bmp.getPixel(w.x, w.y) == targetColor)) {
+                bmp.setPixel(w.x, w.y, replacementColor);
+                if ((w.y > 0) && (bmp.getPixel(w.x, w.y - 1) == targetColor))
+                    q.add(new Point(w.x, w.y - 1));
+                if ((w.y < bmp.getHeight() - 1) && (bmp.getPixel(w.x, w.y + 1) == targetColor))
+                    q.add(new Point(w.x, w.y + 1));
+                w.x--;
+            }
+            while ((e.x < bmp.getWidth() - 1) && (bmp.getPixel(e.x, e.y) == targetColor)) {
+                bmp.setPixel(e.x, e.y, replacementColor);
+
+                if ((e.y > 0) && (bmp.getPixel(e.x, e.y - 1) == targetColor))
+                    q.add(new Point(e.x, e.y - 1));
+                if ((e.y < bmp.getHeight() - 1) && (bmp.getPixel(e.x, e.y + 1) == targetColor))
+                    q.add(new Point(e.x, e.y + 1));
+                e.x++;
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            draw(new Canvas(bitmap));
+            this.bitmap = bitmap;
+        }
+
+        return bmp;
+    }
+
     public void open(Bitmap bitmap) {
         this.bitmap = bitmap;
         invalidate();
@@ -364,11 +344,15 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
         open(bitmap);
     }
 
-    private void saveImage() {
+    private void saveImage(String name) {
+        if (name.isEmpty()) {
+            name = "AndroidPaint";
+        }
+
         Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         draw(new Canvas(bitmap));
 
-        String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
+        String path = Environment.getExternalStorageDirectory() + "/" + name + ".jpg";
         File file = new File(path);
 
         try {
