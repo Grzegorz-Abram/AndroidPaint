@@ -1,98 +1,111 @@
 package pl.android.androidpaint;
 
+import android.graphics.Path;
 import android.graphics.RectF;
 
 public class FiguresToDraw {
-	private float left;
-	private float top;
-	private float right;
-	private float bottom;
-	private float circleX;
-	private float circleY;
-	private float circleRadius;
-	private RectF bounds;
-	private float[] pts;
-	private int color;
-	private int size;
-	private Figures figure;
+    private float left;
+    private float top;
+    private float right;
+    private float bottom;
+    private float circleX;
+    private float circleY;
+    private float circleRadius;
+    private RectF bounds;
+    private float[] pts;
+    private int color;
+    private int size;
+    private Figures figure;
+    private Path path;
 
-	public FiguresToDraw(float left, float top, float right, float bottom, int color, int size) {
-		this.left = left;
-		this.top = top;
-		this.right = right;
-		this.bottom = bottom;
-		this.color = color;
-		this.size = size;
-		this.figure = Figures.RECTANGLE;
-	}
+    public FiguresToDraw(float left, float top, float right, float bottom, int color, int size) {
+        this.left = left;
+        this.top = top;
+        this.right = right;
+        this.bottom = bottom;
+        this.color = color;
+        this.size = size;
+        this.figure = Figures.RECTANGLE;
+    }
 
-	public FiguresToDraw(float circleX, float circleY, float circleRadius, int color, int size) {
-		this.circleX = circleX;
-		this.circleY = circleY;
-		this.circleRadius = circleRadius;
-		this.color = color;
-		this.size = size;
-		this.figure = Figures.CIRCLE;
-	}
+    public FiguresToDraw(float circleX, float circleY, float circleRadius, int color, int size) {
+        this.circleX = circleX;
+        this.circleY = circleY;
+        this.circleRadius = circleRadius;
+        this.color = color;
+        this.size = size;
+        this.figure = Figures.CIRCLE;
+    }
 
-	public FiguresToDraw(float[] pts, int color, int size) {
-		this.pts = pts;
-		this.color = color;
-		this.size = size;
-		this.figure = Figures.LINE;
-	}
+    public FiguresToDraw(float[] pts, int color, int size) {
+        this.pts = pts;
+        this.color = color;
+        this.size = size;
+        this.figure = Figures.LINE;
+    }
 
-	public FiguresToDraw(RectF bounds, int color) {
-		this.bounds = bounds;
-		this.color = color;
-		this.figure = Figures.POINT;
-	}
+    public FiguresToDraw(Path path, int color, int size) {
+        this.path = path;
+        this.color = color;
+        this.size = size;
+        this.figure = Figures.POINT;
+    }
 
-	public float getBottom() {
-		return bottom;
-	}
+    public FiguresToDraw(RectF bounds, int color) {
+        this.bounds = bounds;
+        this.color = color;
+        this.figure = Figures.POINT;
+    }
 
-	public RectF getBounds() {
-		return bounds;
-	}
+    public float getBottom() {
+        return bottom;
+    }
 
-	public float getCircleRadius() {
-		return circleRadius;
-	}
+    public RectF getBounds() {
+        return bounds;
+    }
 
-	public float getCircleX() {
-		return circleX;
-	}
+    public float getCircleRadius() {
+        return circleRadius;
+    }
 
-	public float getCircleY() {
-		return circleY;
-	}
+    public float getCircleX() {
+        return circleX;
+    }
 
-	public int getColor() {
-		return color;
-	}
+    public float getCircleY() {
+        return circleY;
+    }
 
-	public Figures getFigure() {
-		return figure;
-	}
+    public int getColor() {
+        return color;
+    }
 
-	public float getLeft() {
-		return left;
-	}
+    public Figures getFigure() {
+        return figure;
+    }
 
-	public float[] getPts() {
-		return pts;
-	}
+    public float getLeft() {
+        return left;
+    }
 
-	public float getRight() {
-		return right;
-	}
+    public Path getPath() {
+        return path;
+    }
 
-	public int getSize() {
-		return size;
-	}
-	
-	public float getTop() {
-		return top;
-	}
+    public float[] getPts() {
+        return pts;
+    }
+
+    public float getRight() {
+        return right;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public float getTop() {
+        return top;
+    }
 }
