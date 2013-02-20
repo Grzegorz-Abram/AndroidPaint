@@ -32,6 +32,7 @@ public class PaintActivity extends Activity {
     private Button button_rectangle;
     private Button button_eraser;
     private Button button_fill;
+    private Button button_undo;
     private int lastColor;
     private int lastSize;
 
@@ -50,6 +51,7 @@ public class PaintActivity extends Activity {
 
     public void doClear(View view) {
         paintView.undo(Integer.MAX_VALUE);
+        updateUndoButton();
     }
 
     public void doColor(View view) {
@@ -119,6 +121,8 @@ public class PaintActivity extends Activity {
             bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(), true);
 
             paintView.undo(Integer.MAX_VALUE);
+            updateUndoButton();
+
             paintView.open(bitmap);
 
             showMessage("Successfully opened image " + path);
@@ -181,6 +185,7 @@ public class PaintActivity extends Activity {
 
     public void doUndo(View view) {
         paintView.undo(1);
+        updateUndoButton();
     }
 
     @Override
@@ -197,6 +202,10 @@ public class PaintActivity extends Activity {
         button_rectangle = (Button) findViewById(R.id.button_rectangle);
         button_eraser = (Button) findViewById(R.id.button_eraser);
         button_fill = (Button) findViewById(R.id.button_fill);
+        button_undo = (Button) findViewById(R.id.button_undo);
+
+        updateUndoButton();
+        paintView.setButtonUndo(button_undo);
 
         lastColor = Colors.RED.getColor();
         lastSize = Sizes.MEDIUM.getSize();
@@ -236,5 +245,9 @@ public class PaintActivity extends Activity {
             }
         });
         ad.show();
+    }
+
+    private void updateUndoButton() {
+        button_undo.setText("Undo (" + paintView.getHistorySteps() + ")");
     }
 }

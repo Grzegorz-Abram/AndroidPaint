@@ -14,10 +14,6 @@ public class PaintThread extends Thread {
         myThreadSurfaceView = surfaceView;
     }
 
-    public void setRunning(boolean b) {
-        myThreadRun = b;
-    }
-
     @Override
     public void run() {
         while (myThreadRun) {
@@ -33,5 +29,9 @@ public class PaintThread extends Thread {
                 }
             }
         }
+    }
+
+    public void setRunning(boolean b) {
+        myThreadRun = b;
     }
 }

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
 
 public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -52,6 +53,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean drawing = false;
     private PaintThread thread;
     private final int historySteps = 10;
+    private Button button_undo;
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -167,6 +169,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             }
             y1--;
         }
+    }
+
+    public int getHistorySteps() {
+        return figures.size();
     }
 
     @Override
@@ -336,6 +342,8 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
         invalidate();
 
+        updateUndoButton();
+
         return true;
     }
 
@@ -369,6 +377,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
         } catch (IOException e) {
         }
+    }
+
+    public void setButtonUndo(Button button_undo) {
+        this.button_undo = button_undo;
     }
 
     public void setColor(int color) {
@@ -420,6 +432,12 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
             invalidate();
         } catch (IndexOutOfBoundsException e) {
+        }
+    }
+
+    private void updateUndoButton() {
+        if (button_undo != null) {
+            button_undo.setText("Undo (" + getHistorySteps() + ")");
         }
     }
 }
