@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AndroidPaint</string>
+    <string name="app_name">Android Paint</string>
     <string name="menu_pencil">Pencil</string>
     <string name="menu_color">Color</string>
     <string name="menu_size">Size</string>
