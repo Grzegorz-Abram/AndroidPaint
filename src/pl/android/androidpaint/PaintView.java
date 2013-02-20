@@ -318,10 +318,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                     q.add(new Point(e.x, e.y + 1));
                 e.x++;
             }
-
-            Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-            draw(new Canvas(bitmap));
-            this.bitmap = bitmap;
         }
 
         return bmp;
