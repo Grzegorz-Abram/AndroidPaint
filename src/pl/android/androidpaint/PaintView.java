@@ -245,7 +245,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
                 int oldColor = bitmap.getPixel((int) event.getX(), (int) event.getY());
 
-                this.bitmap = FloodFill(bitmap, new Point((int) event.getX(), (int) event.getY()), oldColor, this.color);
+                this.bitmap = floodFill(bitmap, new Point((int) event.getX(), (int) event.getY()), oldColor, this.color);
             }
 
             break;
@@ -276,32 +276,38 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    private Bitmap FloodFill(Bitmap bmp, Point pt, int targetColor, int replacementColor) {
-        Queue<Point> q = new LinkedList<Point>();
-        q.add(pt);
-        while (q.size() > 0) {
-            Point n = q.poll();
-            if (bmp.getPixel(n.x, n.y) != targetColor)
-                continue;
-
-            Point w = n, e = new Point(n.x + 1, n.y);
-            while ((w.x > 0) && (bmp.getPixel(w.x, w.y) == targetColor)) {
-                bmp.setPixel(w.x, w.y, replacementColor);
-                if ((w.y > 0) && (bmp.getPixel(w.x, w.y - 1) == targetColor))
-                    q.add(new Point(w.x, w.y - 1));
-                if ((w.y < bmp.getHeight() - 1) && (bmp.getPixel(w.x, w.y + 1) == targetColor))
-                    q.add(new Point(w.x, w.y + 1));
-                w.x--;
-            }
-            while ((e.x < bmp.getWidth() - 1) && (bmp.getPixel(e.x, e.y) == targetColor)) {
-                bmp.setPixel(e.x, e.y, replacementColor);
-
-                if ((e.y > 0) && (bmp.getPixel(e.x, e.y - 1) == targetColor))
-                    q.add(new Point(e.x, e.y - 1));
-                if ((e.y < bmp.getHeight() - 1) && (bmp.getPixel(e.x, e.y + 1) == targetColor))
-                    q.add(new Point(e.x, e.y + 1));
-                e.x++;
-            }
+    private Bitmap floodFill(Bitmap bmp, Point node, int targetColor, int replacementColor) {
+        int width = bmp.getWidth();
+        int height = bmp.getHeight();
+        int target = targetColor;
+        int replacement = replacementColor;
+        if (target != replacement) {
+            Queue<Point> queue = new LinkedList<Point>();
+            do {
+                int x = node.x;
+                int y = node.y;
+                while (x > 0 && bmp.getPixel(x - 1, y) == target) {
+                    x--;
+                }
+                boolean spanUp = false;
+                boolean spanDown = false;
+                while (x < width && bmp.getPixel(x, y) == target) {
+                    bmp.setPixel(x, y, replacement);
+                    if (!spanUp && y > 0 && bmp.getPixel(x, y - 1) == target) {
+                        queue.add(new Point(x, y - 1));
+                        spanUp = true;
+                    } else if (spanUp && y > 0 && bmp.getPixel(x, y - 1) != target) {
+                        spanUp = false;
+                    }
+                    if (!spanDown && y < height - 1 && bmp.getPixel(x, y + 1) == target) {
+                        queue.add(new Point(x, y + 1));
+                        spanDown = true;
+                    } else if (spanDown && y < height - 1 && bmp.getPixel(x, y + 1) != target) {
+                        spanDown = false;
+                    }
+                    x++;
+                }
+            } while ((node = queue.poll()) != null);
         }
 
         return bmp;
