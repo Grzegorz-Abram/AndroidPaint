@@ -28,6 +28,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     private ArrayList<FiguresToDraw> figuresToFlat;
     private ArrayList<FiguresToDraw> figuresBuffer;
     private Paint paint;
+    private Paint paintTemp;
     private int color;
     private int size;
     private Figures figure;
@@ -48,16 +49,23 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     private float circleStopY;
     private Bitmap bitmap;
     private Path path;
+    private boolean drawing = false;
+    private PaintThread thread;
     private final int historySteps = 10;
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        getHolder().addCallback(this);
+        thread = new PaintThread(getHolder(), this);
+        setFocusable(true);
 
         figures = new ArrayList<FiguresToDraw>();
         figuresToFlat = new ArrayList<FiguresToDraw>();
         figuresBuffer = new ArrayList<FiguresToDraw>();
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintTemp = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     private int detectColor(int x, int y) {
@@ -100,20 +108,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    private void floodFill4(int x, int y, int newColor, int oldColor) {
-        if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight() && detectColor(x, y) == oldColor && detectColor(x, y) != newColor) {
-            // screenBuffer[x][y] = newColor; // set color before starting recursion
-
-            bitmap.setPixel(x, y, newColor);
-
-            floodFill4(x + 1, y, newColor, oldColor);
-            floodFill4(x - 1, y, newColor, oldColor);
-            floodFill4(x, y + 1, newColor, oldColor);
-            floodFill4(x, y - 1, newColor, oldColor);
-        }
-    }
-
-    void floodFillScanline(int x, int y, int newColor, int oldColor) {
+    private void floodFillScanline(int x, int y, int newColor, int oldColor) {
         if (oldColor == newColor)
             return;
         if (detectColor(x, y) != oldColor)
@@ -176,16 +171,48 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (bitmap != null) {
-            canvas.drawBitmap(bitmap, 0, 0, null);
-        }
+        try {
+            if (bitmap != null) {
+                canvas.drawBitmap(bitmap, 0, 0, null);
+            }
 
-        if (figuresToFlat.size() > 0) {
-            drawFigures(figuresToFlat, canvas);
-        }
+            if (figuresToFlat.size() > 0) {
+                drawFigures(figuresToFlat, canvas);
+            }
 
-        if (figures.size() > 0) {
-            drawFigures(figures, canvas);
+            if (figures.size() > 0) {
+                drawFigures(figures, canvas);
+            }
+
+            if (drawing) {
+                paintTemp.setColor(this.color);
+                paintTemp.setStrokeCap(Paint.Cap.ROUND);
+                paintTemp.setStrokeJoin(Paint.Join.ROUND);
+
+                switch (this.figure) {
+                case RECTANGLE:
+                    paintTemp.setStrokeWidth(this.size * 2);
+                    paintTemp.setStyle(Style.STROKE);
+                    canvas.drawRect(this.rectLeft, this.rectTop, this.rectRight, this.rectBottom, paintTemp);
+                    break;
+                case CIRCLE:
+                    paintTemp.setStrokeWidth(this.size * 2);
+                    paintTemp.setStyle(Style.STROKE);
+                    canvas.drawCircle(this.circleX, this.circleY, this.circleRadius, paintTemp);
+                    break;
+                case LINE:
+                    paintTemp.setStrokeWidth(this.size * 2);
+                    paintTemp.setStyle(Style.FILL);
+                    canvas.drawLines(new float[] { this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY }, paintTemp);
+                    break;
+                case POINT:
+                    paintTemp.setStrokeWidth(this.size * 2);
+                    paintTemp.setStyle(Style.STROKE);
+                    canvas.drawPath(this.path, paintTemp);
+                    break;
+                }
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -196,12 +223,17 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 path = new Path();
                 path.moveTo(event.getX(), event.getY());
-                path.lineTo(event.getX(), event.getY());
+                path.lineTo(event.getX() + 1, event.getY() + 1);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 path.lineTo(event.getX(), event.getY());
+
+                drawing = true;
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 path.lineTo(event.getX(), event.getY());
+
                 figures.add(new FiguresToDraw(path, this.color, this.size));
+
+                drawing = false;
             }
 
             break;
@@ -209,13 +241,18 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.lineStartX = event.getX();
                 this.lineStartY = event.getY();
-            }
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                this.lineStopX = event.getX();
+                this.lineStopY = event.getY();
 
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+                drawing = true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 this.lineStopX = event.getX();
                 this.lineStopY = event.getY();
 
                 figures.add(new FiguresToDraw(new float[] { this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY }, this.color, this.size));
+
+                drawing = false;
             }
 
             break;
@@ -223,17 +260,25 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.circleStartX = event.getX();
                 this.circleStartY = event.getY();
-            }
-
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+                this.circleRadius = 1;
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 this.circleStopX = event.getX();
                 this.circleStopY = event.getY();
-
                 this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
                 this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
-                this.circleRadius = (float) Math.sqrt(Math.pow(Math.abs(this.circleX - event.getX()), 2) + Math.pow(Math.abs(this.circleY - event.getY()), 2));
+                this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2) + Math.pow(this.circleY - event.getY(), 2));
+
+                drawing = true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                this.circleStopX = event.getX();
+                this.circleStopY = event.getY();
+                this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
+                this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
+                this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2) + Math.pow(this.circleY - event.getY(), 2));
 
                 figures.add(new FiguresToDraw(this.circleX, this.circleY, this.circleRadius, this.color, this.size));
+
+                drawing = false;
             }
 
             break;
@@ -241,13 +286,18 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.rectLeft = event.getX();
                 this.rectTop = event.getY();
-            }
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                this.rectRight = event.getX();
+                this.rectBottom = event.getY();
 
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+                drawing = true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 this.rectRight = event.getX();
                 this.rectBottom = event.getY();
 
                 figures.add(new FiguresToDraw(this.rectLeft, this.rectTop, this.rectRight, this.rectBottom, this.color, this.size));
+
+                drawing = false;
             }
 
             break;
@@ -340,12 +390,21 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder arg0) {
-
+        thread.setRunning(true);
+        thread.start();
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder arg0) {
-
+        boolean retry = true;
+        thread.setRunning(false);
+        while (retry) {
+            try {
+                thread.join();
+                retry = false;
+            } catch (InterruptedException e) {
+            }
+        }
     }
 
     public void undo(int steps) {
