@@ -1,23 +1,16 @@
 package pl.android.androidpaint;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -69,15 +62,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintTemp = new Paint(Paint.ANTI_ALIAS_FLAG);
-    }
-
-    private int detectColor(int x, int y) {
-        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        this.draw(new Canvas(bitmap));
-
-        // saveImage();
-
-        return bitmap.getPixel(x, y);
     }
 
     private void drawFigures(ArrayList<FiguresToDraw> arrayOfFigures, Canvas canvas) {
@@ -326,37 +310,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     public void open(Bitmap bitmap) {
         this.bitmap = bitmap;
         invalidate();
-    }
-
-    private void openImage() {
-        String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-
-        try {
-            bitmap = Bitmap.createScaledBitmap(bitmap, getWidth(), getHeight(), true);
-        } catch (Exception e) {
-        }
-
-        open(bitmap);
-    }
-
-    private void saveImage(String name) {
-        if (name.isEmpty()) {
-            name = "AndroidPaint";
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        draw(new Canvas(bitmap));
-
-        String path = Environment.getExternalStorageDirectory() + "/" + name + ".jpg";
-        File file = new File(path);
-
-        try {
-            file.createNewFile();
-            OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-        } catch (IOException e) {
-        }
     }
 
     public void setButtonUndo(Button button_undo) {
