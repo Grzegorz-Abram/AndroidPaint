@@ -1,14 +1,22 @@
 package pl.android.androidpaint;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -131,9 +139,120 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 			break;
+		case FILL:
+			if (event.getAction() == MotionEvent.ACTION_UP) {
+				int oldColor = detectColor((int) event.getX(), (int) event.getY());
+				floodFillScanline((int) event.getX(), (int) event.getY(), this.color, oldColor);
+
+				if (oldColor == Color.RED) {
+					Log.d("COLOR", "RED");
+				} else {
+					Log.d("COLOR", "OTHER");
+				}
+			}
+
+			break;
 		}
 		invalidate();
 		return true;
+	}
+
+	private void floodFill4(int x, int y, int newColor, int oldColor) {
+		if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight() && detectColor(x, y) == oldColor && detectColor(x, y) != newColor) {
+			// screenBuffer[x][y] = newColor; // set color before starting recursion
+
+			bitmap.setPixel(x, y, newColor);
+
+			floodFill4(x + 1, y, newColor, oldColor);
+			floodFill4(x - 1, y, newColor, oldColor);
+			floodFill4(x, y + 1, newColor, oldColor);
+			floodFill4(x, y - 1, newColor, oldColor);
+		}
+	}
+
+	void floodFillScanline(int x, int y, int newColor, int oldColor) {
+		if (oldColor == newColor)
+			return;
+		if (detectColor(x, y) != oldColor)
+			return;
+
+		int y1;
+
+		//saveImage();
+
+		// draw current scanline from start position to the top
+		y1 = y;
+		while (y1 < getHeight() && detectColor(x, y1) == oldColor) {
+			bitmap.setPixel(x, y1, newColor);
+			y1++;
+		}
+
+		//saveImage();
+
+		// draw current scanline from start position to the bottom
+		y1 = y - 1;
+		while (y1 >= 0 && detectColor(x, y1) == oldColor) {
+			bitmap.setPixel(x, y1, newColor);
+			y1--;
+		}
+
+		//saveImage();
+
+		// test for new scanlines to the left
+		y1 = y;
+		while (y1 < getHeight() && detectColor(x, y1) == newColor) {
+			if (x > 0 && detectColor(x - 1, y1) == oldColor) {
+				floodFillScanline(x - 1, y1, newColor, oldColor);
+			}
+			y1++;
+		}
+		y1 = y - 1;
+		while (y1 >= 0 && detectColor(x, y1) == newColor) {
+			if (x > 0 && detectColor(x - 1, y1) == oldColor) {
+				floodFillScanline(x - 1, y1, newColor, oldColor);
+			}
+			y1--;
+		}
+
+		// test for new scanlines to the right
+		y1 = y;
+		while (y1 < getHeight() && detectColor(x, y1) == newColor) {
+			if (x < getWidth() - 1 && detectColor(x + 1, y1) == oldColor) {
+				floodFillScanline(x + 1, y1, newColor, oldColor);
+			}
+			y1++;
+		}
+		y1 = y - 1;
+		while (y1 >= 0 && detectColor(x, y1) == newColor) {
+			if (x < getWidth() - 1 && detectColor(x + 1, y1) == oldColor) {
+				floodFillScanline(x + 1, y1, newColor, oldColor);
+			}
+			y1--;
+		}
+	}
+
+	private void saveImage() {
+		Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+		draw(new Canvas(bitmap));
+
+		String path = Environment.getExternalStorageDirectory() + "/AndroidPaint" + System.currentTimeMillis() + ".jpg";
+		File file = new File(path);
+
+		try {
+			file.createNewFile();
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+		} catch (IOException e) {
+		}
+	}
+
+	private int detectColor(int x, int y) {
+		bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+		this.draw(new Canvas(bitmap));
+
+		//saveImage();
+		
+		return bitmap.getPixel(x, y);
 	}
 
 	public void setColor(int color) {

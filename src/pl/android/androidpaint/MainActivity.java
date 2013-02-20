@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
 	private Button button_circle;
 	private Button button_rectangle;
 	private Button button_eraser;
+	private Button button_fill;
 	private int lastColor;
 	private int lastSize;
 
@@ -78,7 +79,12 @@ public class MainActivity extends Activity {
 	}
 
 	public void doFill(View view) {
+		paintView.setFigure(Figures.FILL);
+		paintView.setColor(lastColor);
+		paintView.setSize(lastSize);
+		button_color.setEnabled(true);
 
+		doFocus(button_fill);
 	}
 
 	private void doFocus(Button button) {
@@ -87,6 +93,7 @@ public class MainActivity extends Activity {
 		button_circle.setTypeface(null, Typeface.NORMAL);
 		button_rectangle.setTypeface(null, Typeface.NORMAL);
 		button_eraser.setTypeface(null, Typeface.NORMAL);
+		button_fill.setTypeface(null, Typeface.NORMAL);
 
 		button.setTypeface(null, Typeface.BOLD);
 	}
@@ -189,6 +196,7 @@ public class MainActivity extends Activity {
 		button_circle = (Button) findViewById(R.id.button_circle);
 		button_rectangle = (Button) findViewById(R.id.button_rectangle);
 		button_eraser = (Button) findViewById(R.id.button_eraser);
+		button_fill = (Button) findViewById(R.id.button_fill);
 
 		lastColor = Colors.RED.getColor();
 		lastSize = Sizes.MEDIUM.getSize();
