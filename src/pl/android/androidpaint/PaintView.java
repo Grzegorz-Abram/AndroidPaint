@@ -9,10 +9,13 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
+import android.graphics.Path.Direction;
 import android.graphics.RectF;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -24,6 +27,8 @@ import android.view.SurfaceView;
 public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private ArrayList<FiguresToDraw> figures;
+	private ArrayList<FiguresToDraw> figuresToFlat;
+	private ArrayList<FiguresToDraw> figuresBuffer;
 	private Paint paint;
 	private int color;
 	private int size;
@@ -44,10 +49,17 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 	private float circleStopX;
 	private float circleStopY;
 	private Bitmap bitmap;
+	private Path path;
+	private final int historySteps = 5;
 
 	public PaintView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
 		figures = new ArrayList<FiguresToDraw>();
+		figuresToFlat = new ArrayList<FiguresToDraw>();
+		figuresBuffer = new ArrayList<FiguresToDraw>();
+
+		// paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint = new Paint();
 	}
 
@@ -57,7 +69,17 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 			canvas.drawBitmap(bitmap, 0, 0, null);
 		}
 
-		for (FiguresToDraw figure : figures) {
+		if (figuresToFlat.size() > 0) {
+			drawFigures(figuresToFlat, canvas);
+		}
+
+		if (figures.size() > 0) {
+			drawFigures(figures, canvas);
+		}
+	}
+
+	private void drawFigures(ArrayList<FiguresToDraw> arrayOfFigures, Canvas canvas) {
+		for (FiguresToDraw figure : arrayOfFigures) {
 			paint.setColor(figure.getColor());
 
 			switch (figure.getFigure()) {
@@ -78,7 +100,13 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 				break;
 			case POINT:
 				paint.setStyle(Style.FILL);
-				canvas.drawOval(figure.getBounds(), paint);
+				// canvas.drawOval(figure.getBounds(), paint);
+				// canvas.drawPoint(figure.getBounds().centerX(), figure.getBounds().centerY(), paint);
+
+				path.addOval(figure.getBounds(), Direction.CW);
+				path.lineTo(figure.getBounds().centerX(), figure.getBounds().centerY());
+				path.close();
+				canvas.drawPath(path, paint);
 				break;
 			}
 		}
@@ -92,6 +120,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
 			figures.add(new FiguresToDraw(oval, this.color));
 
+			// path = new Path();
 			break;
 		case LINE:
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -153,7 +182,27 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
 			break;
 		}
+
+		if (figures.size() > historySteps) {
+			figuresToFlat.add(figures.remove(0));
+
+			while (figures.size() > 0) {
+				figuresBuffer.add(figures.remove(0));
+			}
+
+			Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+			draw(new Canvas(bitmap));
+			this.bitmap = bitmap;
+
+			while (figuresBuffer.size() > 0) {
+				figures.add(figuresBuffer.remove(0));
+			}
+
+			figuresToFlat.clear();
+		}
+
 		invalidate();
+
 		return true;
 	}
 
@@ -178,7 +227,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
 		int y1;
 
-		//saveImage();
+		// saveImage();
 
 		// draw current scanline from start position to the top
 		y1 = y;
@@ -187,7 +236,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 			y1++;
 		}
 
-		//saveImage();
+		// saveImage();
 
 		// draw current scanline from start position to the bottom
 		y1 = y - 1;
@@ -196,7 +245,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 			y1--;
 		}
 
-		//saveImage();
+		// saveImage();
 
 		// test for new scanlines to the left
 		y1 = y;
@@ -235,7 +284,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 		Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
 		draw(new Canvas(bitmap));
 
-		String path = Environment.getExternalStorageDirectory() + "/AndroidPaint" + System.currentTimeMillis() + ".jpg";
+		String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
 		File file = new File(path);
 
 		try {
@@ -246,12 +295,24 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
+	private void openImage() {
+		String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
+		Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+		try {
+			bitmap = Bitmap.createScaledBitmap(bitmap, getWidth(), getHeight(), true);
+		} catch (Exception e) {
+		}
+
+		open(bitmap);
+	}
+
 	private int detectColor(int x, int y) {
 		bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
 		this.draw(new Canvas(bitmap));
 
-		//saveImage();
-		
+		// saveImage();
+
 		return bitmap.getPixel(x, y);
 	}
 
@@ -286,6 +347,8 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 		try {
 			if (steps == Integer.MAX_VALUE) {
 				figures.clear();
+				figuresBuffer.clear();
+				figuresToFlat.clear();
 				this.bitmap = null;
 			} else {
 				figures.remove(figures.size() - 1);
