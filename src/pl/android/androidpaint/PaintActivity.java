@@ -90,12 +90,33 @@ public class PaintActivity extends Activity {
     }
 
     public void doFill(View view) {
-        paintView.setFigure(Figures.FILL);
-        paintView.setColor(lastColor);
-        paintView.setSize(lastSize);
-        button_color.setEnabled(true);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getResources().getText(R.string.color));
 
-        doFocus(button_fill);
+        String[] items = new String[] { getResources().getText(R.string.high_tolerance).toString(), getResources().getText(R.string.low_tolerance).toString() };
+
+        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    paintView.setTolerance(128);
+                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_high, 0, 0);
+                } else {
+                    paintView.setTolerance(0);
+                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0, 0);
+                }
+
+                paintView.setFigure(Figures.FILL);
+                paintView.setColor(lastColor);
+                paintView.setSize(lastSize);
+                button_color.setEnabled(true);
+
+                doFocus(button_fill);
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void doFocus(Button button) {
@@ -120,12 +141,12 @@ public class PaintActivity extends Activity {
 
     public void doOpen(View view) {
         try {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getResources().getText(R.string.screenshot_name)
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getResources().getText(R.string.screenshot_name)
                     + getResources().getText(R.string.screenshot_extension);
             Bitmap bitmap = BitmapFactory.decodeFile(path);
 
             if (bitmap == null) {
-                throw new Exception(getResources().getText(R.string.error_opening_image) + "/n" + path);
+                throw new Exception(getResources().getText(R.string.error_opening_image) + "\n" + path);
             }
 
             bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(), true);
@@ -135,7 +156,7 @@ public class PaintActivity extends Activity {
 
             paintView.open(bitmap);
 
-            showMessage(getResources().getText(R.string.message_opening_image) + "/n" + path);
+            showMessage(getResources().getText(R.string.message_opening_image) + "\n" + path);
         } catch (Exception e) {
             showMessage(e.getMessage());
         }
@@ -163,7 +184,7 @@ public class PaintActivity extends Activity {
         Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(), Bitmap.Config.ARGB_8888);
         paintView.draw(new Canvas(bitmap));
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getResources().getText(R.string.screenshot_name)
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getResources().getText(R.string.screenshot_name)
                 + getResources().getText(R.string.screenshot_extension);
         File file = new File(path);
 
@@ -174,12 +195,12 @@ public class PaintActivity extends Activity {
             if (getResources().getText(R.string.screenshot_extension).toString().toUpperCase(Locale.US).endsWith("JPG")) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             } else {
-                throw new IOException((getResources().getText(R.string.error_saving_image)) + "/n" + path);
+                throw new IOException((getResources().getText(R.string.error_saving_image)) + "\n" + path);
             }
 
-            showMessage(getResources().getText(R.string.message_saving_image) + "/n" + path);
+            showMessage(getResources().getText(R.string.message_saving_image) + "\n" + path);
         } catch (IOException e) {
-            showMessage(e.getMessage());
+            showMessage(e.getMessage() + "\n" + path);
         }
     }
 
@@ -228,6 +249,9 @@ public class PaintActivity extends Activity {
 
         updateUndoButton();
         paintView.setButtonUndo(button_undo);
+
+        paintView.setTolerance(0);
+        button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0, 0);
 
         lastColor = Colors.RED.getColor();
         lastSize = Sizes.MEDIUM.getSize();

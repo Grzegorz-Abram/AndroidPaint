@@ -47,6 +47,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     private PaintThread thread;
     private final int historySteps = 10;
     private Button button_undo;
+    private int tolerance;
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -242,7 +243,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
                 figuresToFlat.clear();
 
-                FloodFiller ff = new FloodFiller(bitmap, this.color, 128);
+                FloodFiller ff = new FloodFiller(bitmap, this.color, this.tolerance);
                 ff.floodFill(new Point((int) event.getX(), (int) event.getY()));
                 this.bitmap = ff.getBitmap();
             }
@@ -294,6 +295,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public void setTolerance(int tolerance) {
+        this.tolerance = tolerance;
     }
 
     @Override

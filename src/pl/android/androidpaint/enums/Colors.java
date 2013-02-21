@@ -20,11 +20,11 @@ public enum Colors {
         this.color = color;
     }
 
-    public StringBuffer getDescription(Resources r) {
-        return new StringBuffer(r.getText(resId));
-    }
-
     public int getColor() {
         return color;
+    }
+
+    public StringBuffer getDescription(Resources r) {
+        return new StringBuffer(r.getText(resId));
     }
 }
