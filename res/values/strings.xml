@@ -34,5 +34,6 @@
     <string name="big">Big</string>
     <string name="high_tolerance">High tolerance</string>
     <string name="low_tolerance">Low tolerance</string>
+    <string name="exit">Exit</string>
 
 </resources>

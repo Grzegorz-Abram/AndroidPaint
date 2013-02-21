@@ -234,6 +234,11 @@ public class PaintActivity extends Activity {
         updateUndoButton();
     }
 
+    private void exit() {
+        finish();
+        System.exit(0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -285,6 +290,9 @@ public class PaintActivity extends Activity {
         switch (item.getItemId()) {
         case R.id.menu_about:
             about();
+            break;
+        case R.id.menu_exit:
+            exit();
             break;
         }
 

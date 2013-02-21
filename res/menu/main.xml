@@ -1,4 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menu_about" android:title="@string/about" android:orderInCategory="1"></item>
+
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="1"
+        android:title="@string/about">
+    </item>
+    <item
+        android:id="@+id/menu_exit"
+        android:orderInCategory="2"
+        android:title="@string/exit">
+    </item>
 
 </menu>

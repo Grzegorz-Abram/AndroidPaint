@@ -89,7 +89,6 @@
             android:onClick="doFill"
             android:text="@string/fill"
             android:textSize="10sp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -169,7 +168,6 @@
             android:onClick="doClear"
             android:text="@string/clear_screen"
             android:textSize="10sp" />
-
     </LinearLayout>
 
 </LinearLayout>
