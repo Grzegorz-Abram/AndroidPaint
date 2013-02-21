@@ -60,9 +60,14 @@ public class PaintActivity extends Activity {
 
     public void doColor(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(getString(R.string.color));
+        alertDialogBuilder.setTitle(getResources().getText(R.string.color));
 
-        alertDialogBuilder.setItems(Colors.values(), new DialogInterface.OnClickListener() {
+        StringBuffer[] items = new StringBuffer[Colors.values().length];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = Colors.values()[i].getDescription(getResources());
+        }
+
+        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 lastColor = Colors.values()[item].getColor();
@@ -115,11 +120,12 @@ public class PaintActivity extends Activity {
 
     public void doOpen(View view) {
         try {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getString(R.string.screenshot_name) + getString(R.string.screenshot_extension);
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getResources().getText(R.string.screenshot_name)
+                    + getResources().getText(R.string.screenshot_extension);
             Bitmap bitmap = BitmapFactory.decodeFile(path);
 
             if (bitmap == null) {
-                throw new Exception(getString(R.string.error_opening_image) + "/n" + path);
+                throw new Exception(getResources().getText(R.string.error_opening_image) + "/n" + path);
             }
 
             bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(), true);
@@ -129,7 +135,7 @@ public class PaintActivity extends Activity {
 
             paintView.open(bitmap);
 
-            showMessage(getString(R.string.message_opening_image) + "/n" + path);
+            showMessage(getResources().getText(R.string.message_opening_image) + "/n" + path);
         } catch (Exception e) {
             showMessage(e.getMessage());
         }
@@ -157,20 +163,21 @@ public class PaintActivity extends Activity {
         Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(), Bitmap.Config.ARGB_8888);
         paintView.draw(new Canvas(bitmap));
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getString(R.string.screenshot_name) + getString(R.string.screenshot_extension);
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getResources().getText(R.string.screenshot_name)
+                + getResources().getText(R.string.screenshot_extension);
         File file = new File(path);
 
         try {
             file.createNewFile();
             OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
 
-            if (getString(R.string.screenshot_extension).toUpperCase(Locale.US).endsWith("JPG")) {
+            if (getResources().getText(R.string.screenshot_extension).toString().toUpperCase(Locale.US).endsWith("JPG")) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             } else {
-                throw new IOException((getString(R.string.error_saving_image)) + "/n" + path);
+                throw new IOException((getResources().getText(R.string.error_saving_image)) + "/n" + path);
             }
 
-            showMessage(getString(R.string.message_saving_image) + "/n" + path);
+            showMessage(getResources().getText(R.string.message_saving_image) + "/n" + path);
         } catch (IOException e) {
             showMessage(e.getMessage());
         }
@@ -178,9 +185,14 @@ public class PaintActivity extends Activity {
 
     public void doSize(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(getString(R.string.size));
+        alertDialogBuilder.setTitle(getResources().getText(R.string.size));
 
-        alertDialogBuilder.setItems(Sizes.values(), new DialogInterface.OnClickListener() {
+        StringBuffer[] items = new StringBuffer[Sizes.values().length];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = Sizes.values()[i].getDescription(getResources());
+        }
+
+        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 lastSize = Sizes.values()[item].getSize();
@@ -248,7 +260,7 @@ public class PaintActivity extends Activity {
         AlertDialog ad = new AlertDialog.Builder(this).create();
         ad.setCancelable(false);
         ad.setMessage(message);
-        ad.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+        ad.setButton(getResources().getText(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -258,6 +270,6 @@ public class PaintActivity extends Activity {
     }
 
     private void updateUndoButton() {
-        button_undo.setText(getString(R.string.undo) + " (" + paintView.getHistorySteps() + ")");
+        button_undo.setText(getResources().getText(R.string.undo) + " (" + paintView.getHistorySteps() + ")");
     }
 }

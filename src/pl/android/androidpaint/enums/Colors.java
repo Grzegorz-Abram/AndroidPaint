@@ -1,44 +1,30 @@
 package pl.android.androidpaint.enums;
 
+import pl.android.androidpaint.R;
+import android.content.res.Resources;
 import android.graphics.Color;
 
-public enum Colors implements CharSequence {
-    RED("Red", Color.RED),
-    GREEN("Green", Color.GREEN),
-    BLUE("Blue", Color.BLUE),
-    CYAN("Cyan", Color.CYAN),
-    MAGENTA("Magenta", Color.MAGENTA),
-    BLACK("Black", Color.BLACK);
+public enum Colors {
+    RED(R.string.red, Color.RED),
+    GREEN(R.string.green, Color.GREEN),
+    BLUE(R.string.blue, Color.BLUE),
+    CYAN(R.string.cyan, Color.CYAN),
+    MAGENTA(R.string.magenta, Color.MAGENTA),
+    BLACK(R.string.black, Color.BLACK);
 
-    private String description;
+    private Integer resId;
     private int color;
 
-    Colors(String description, int color) {
-        this.description = description;
+    Colors(int resId, int color) {
+        this.resId = resId;
         this.color = color;
     }
 
-    @Override
-    public char charAt(int index) {
-        return description.charAt(index);
+    public StringBuffer getDescription(Resources r) {
+        return new StringBuffer(r.getText(resId));
     }
 
     public int getColor() {
         return color;
-    }
-
-    @Override
-    public int length() {
-        return description.length();
-    }
-
-    @Override
-    public CharSequence subSequence(int start, int end) {
-        return description.subSequence(start, end);
-    }
-
-    @Override
-    public String toString() {
-        return description;
     }
 }

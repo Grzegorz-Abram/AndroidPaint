@@ -338,7 +338,7 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void updateUndoButton() {
         if (button_undo != null) {
-            button_undo.setText("Undo (" + getHistorySteps() + ")");
+            button_undo.setText(getResources().getText(R.string.undo) + " (" + getHistorySteps() + ")");
         }
     }
 }

@@ -1,25 +1,25 @@
 package pl.android.androidpaint.enums;
 
 import pl.android.androidpaint.R;
+import android.content.res.Resources;
 
-public enum Sizes implements CharSequence {
-    SMALL("Small", 2, R.drawable.pencil),
-    MEDIUM("Medium", 10, R.drawable.brush),
-    BIG("Big", 20, R.drawable.widebrush);
+public enum Sizes {
+    SMALL(R.string.small, 2, R.drawable.pencil),
+    MEDIUM(R.string.medium, 10, R.drawable.brush),
+    BIG(R.string.big, 20, R.drawable.widebrush);
 
-    private String description;
+    private Integer resId;
     private int size;
     private int icon;
 
-    Sizes(String description, int size, int icon) {
-        this.description = description;
+    Sizes(int resId, int size, int icon) {
+        this.resId = resId;
         this.size = size;
         this.icon = icon;
     }
 
-    @Override
-    public char charAt(int index) {
-        return description.charAt(index);
+    public StringBuffer getDescription(Resources r) {
+        return new StringBuffer(r.getText(resId));
     }
 
     public int getIcon() {
@@ -28,20 +28,5 @@ public enum Sizes implements CharSequence {
 
     public int getSize() {
         return size;
-    }
-
-    @Override
-    public int length() {
-        return description.length();
-    }
-
-    @Override
-    public CharSequence subSequence(int start, int end) {
-        return description.subSequence(start, end);
-    }
-
-    @Override
-    public String toString() {
-        return description;
     }
 }
