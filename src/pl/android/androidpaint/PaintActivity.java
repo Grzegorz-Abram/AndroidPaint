@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import pl.android.androidpaint.enums.Colors;
 import pl.android.androidpaint.enums.Figures;
@@ -59,7 +60,7 @@ public class PaintActivity extends Activity {
 
     public void doColor(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Color");
+        alertDialogBuilder.setTitle(getString(R.string.color));
 
         alertDialogBuilder.setItems(Colors.values(), new DialogInterface.OnClickListener() {
             @Override
@@ -114,11 +115,11 @@ public class PaintActivity extends Activity {
 
     public void doOpen(View view) {
         try {
-            String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getString(R.string.screenshot_name) + getString(R.string.screenshot_extension);
             Bitmap bitmap = BitmapFactory.decodeFile(path);
 
             if (bitmap == null) {
-                throw new Exception("Error opening image " + path);
+                throw new Exception(getString(R.string.error_opening_image) + "/n" + path);
             }
 
             bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(), true);
@@ -128,7 +129,7 @@ public class PaintActivity extends Activity {
 
             paintView.open(bitmap);
 
-            showMessage("Successfully opened image " + path);
+            showMessage(getString(R.string.message_opening_image) + "/n" + path);
         } catch (Exception e) {
             showMessage(e.getMessage());
         }
@@ -156,14 +157,20 @@ public class PaintActivity extends Activity {
         Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(), Bitmap.Config.ARGB_8888);
         paintView.draw(new Canvas(bitmap));
 
-        String path = Environment.getExternalStorageDirectory() + "/AndroidPaint.jpg";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + getString(R.string.screenshot_name) + getString(R.string.screenshot_extension);
         File file = new File(path);
 
         try {
             file.createNewFile();
             OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            showMessage("Image saved to " + path);
+
+            if (getString(R.string.screenshot_extension).toUpperCase(Locale.US).endsWith("JPG")) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            } else {
+                throw new IOException((getString(R.string.error_saving_image)) + "/n" + path);
+            }
+
+            showMessage(getString(R.string.message_saving_image) + "/n" + path);
         } catch (IOException e) {
             showMessage(e.getMessage());
         }
@@ -171,7 +178,7 @@ public class PaintActivity extends Activity {
 
     public void doSize(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Size");
+        alertDialogBuilder.setTitle(getString(R.string.size));
 
         alertDialogBuilder.setItems(Sizes.values(), new DialogInterface.OnClickListener() {
             @Override
@@ -241,7 +248,7 @@ public class PaintActivity extends Activity {
         AlertDialog ad = new AlertDialog.Builder(this).create();
         ad.setCancelable(false);
         ad.setMessage(message);
-        ad.setButton("OK", new DialogInterface.OnClickListener() {
+        ad.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -251,6 +258,6 @@ public class PaintActivity extends Activity {
     }
 
     private void updateUndoButton() {
-        button_undo.setText("Undo (" + paintView.getHistorySteps() + ")");
+        button_undo.setText(getString(R.string.undo) + " (" + paintView.getHistorySteps() + ")");
     }
 }

@@ -2,27 +2,26 @@
 <resources>
 
     <string name="app_name">Android Paint</string>
-    <string name="menu_pencil">Pencil</string>
-    <string name="menu_color">Color</string>
-    <string name="menu_size">Size</string>
-    <string name="menu_eraser_tool">Eraser tool</string>
-	<string name="menu_line">Draw line</string>
-	<string name="menu_circle">Draw circle</string>
-	<string name="menu_rectangle">Draw rectangle</string>
-	<string name="menu_clear_screen">Clear</string>
-	<string name="menu_undo">Undo</string>
-	<string name="menu_about">About</string>
-	<string name="button_pencil">Pencil</string>
-	<string name="button_line">Line</string>
-	<string name="button_circle">Circle</string>
-	<string name="button_rectangle">Rect.</string>
-	<string name="button_eraser">Eraser</string>
-	<string name="button_undo">Undo</string>
-	<string name="button_clear">Clear</string>
-	<string name="button_color">Color</string>
-	<string name="button_size">Size</string>
-	<string name="button_save">Save</string>
-	<string name="button_fill">Fill</string>
-	<string name="button_open">Open</string>
+    <string name="pencil">Pencil</string>
+    <string name="color">Color</string>
+    <string name="size">Size</string>
+    <string name="eraser_tool">Eraser</string>
+    <string name="line">Line</string>
+    <string name="circle">Circle</string>
+    <string name="rectangle">Rectangle</string>
+    <string name="rectangle_short">Rect.</string>
+    <string name="clear_screen">Clear</string>
+    <string name="undo">Undo</string>
+    <string name="about">About</string>
+    <string name="fill">Fill</string>
+    <string name="open">Open</string>
+    <string name="save">Save</string>
+    <string name="ok">OK</string>
+    <string name="error_opening_image">Error opening image</string>
+    <string name="error_saving_image">Error saving image</string>
+    <string name="message_opening_image">Image successfully opened</string>
+    <string name="message_saving_image">Image successfully saved</string>
+    <string name="screenshot_name">AndroidPaint</string>
+    <string name="screenshot_extension">.jpg</string>
 
 </resources>
