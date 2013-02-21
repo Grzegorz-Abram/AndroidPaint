@@ -13,6 +13,7 @@ import pl.android.androidpaint.enums.Sizes;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -251,13 +252,21 @@ public class PaintActivity extends Activity {
         paintView.setButtonUndo(button_undo);
 
         paintView.setTolerance(0);
-        button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0, 0);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            button_fill.setCompoundDrawablesWithIntrinsicBounds(R.drawable.fill_low, 0, 0, 0);
+        } else {
+            button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0, 0);
+        }
 
         lastColor = Colors.RED.getColor();
         lastSize = Sizes.MEDIUM.getSize();
 
         button_color.setTextColor(lastColor);
-        button_size.setCompoundDrawablesWithIntrinsicBounds(0, Sizes.MEDIUM.getIcon(), 0, 0);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            button_size.setCompoundDrawablesWithIntrinsicBounds(Sizes.MEDIUM.getIcon(), 0, 0, 0);
+        } else {
+            button_size.setCompoundDrawablesWithIntrinsicBounds(0, Sizes.MEDIUM.getIcon(), 0, 0);
+        }
 
         doPencil(paintView);
     }

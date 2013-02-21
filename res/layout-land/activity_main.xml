@@ -1,0 +1,172 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".PaintActivity" >
+
+    <pl.android.androidpaint.PaintView
+        android:id="@+id/PaintView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#808080"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/button_pencil"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/point"
+            android:onClick="doPencil"
+            android:text="@string/pencil"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_line"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/line"
+            android:onClick="doLine"
+            android:text="@string/line"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_circle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/circle"
+            android:onClick="doCircle"
+            android:text="@string/circle"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_rectangle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/rectangle"
+            android:onClick="doRectangle"
+            android:text="@string/rectangle_short"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_eraser"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/eraser"
+            android:onClick="doEraser"
+            android:text="@string/eraser_tool"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_fill"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/fill"
+            android:onClick="doFill"
+            android:text="@string/fill"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#808080"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/button_color"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/color"
+            android:drawablePadding="4dp"
+            android:onClick="doColor"
+            android:text="@string/color"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_size"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/brush"
+            android:drawablePadding="4dp"
+            android:onClick="doSize"
+            android:text="@string/size"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_open"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/open"
+            android:drawablePadding="4dp"
+            android:onClick="doOpen"
+            android:text="@string/open"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/save"
+            android:drawablePadding="4dp"
+            android:onClick="doSave"
+            android:text="Save"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_undo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/undo"
+            android:drawablePadding="4dp"
+            android:lines="2"
+            android:onClick="doUndo"
+            android:text="@string/undo"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/button_clear"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/newfile"
+            android:drawablePadding="4dp"
+            android:onClick="doClear"
+            android:text="@string/clear_screen"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
