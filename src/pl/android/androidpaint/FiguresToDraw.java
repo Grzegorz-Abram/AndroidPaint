@@ -1,5 +1,6 @@
 package pl.android.androidpaint;
 
+import pl.android.androidpaint.enums.Figures;
 import android.graphics.Path;
 import android.graphics.RectF;
 

@@ -1,4 +1,4 @@
-package pl.android.androidpaint;
+package pl.android.androidpaint.enums;
 
 public enum Figures {
     POINT,

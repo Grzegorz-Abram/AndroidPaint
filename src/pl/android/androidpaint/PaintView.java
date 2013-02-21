@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import pl.android.androidpaint.enums.Figures;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
