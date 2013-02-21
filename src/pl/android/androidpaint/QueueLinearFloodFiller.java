@@ -143,14 +143,14 @@ public class QueueLinearFloodFiller {
         int pxIdx = (width * y) + x;
         while (true) {
             // fill with the color
-            image.setPixel(x, y, fillColour);
+            image.setPixel(lFillLoc, y, fillColour);
             // indicate that this pixel has already been checked and filled
             pixelsChecked[pxIdx] = true;
             // de-increment
             lFillLoc--; // de-increment counter
             pxIdx--; // de-increment pixel index
             // exit loop if we're at edge of bitmap or color area
-            if (lFillLoc < 0 || (pixelsChecked[pxIdx]) || !checkPixel(image.getPixel(x, y)))
+            if (lFillLoc < 0 || (pixelsChecked[pxIdx]) || !checkPixel(image.getPixel(lFillLoc, y)))
                 break;
         }
         lFillLoc++;
@@ -160,14 +160,14 @@ public class QueueLinearFloodFiller {
         pxIdx = (width * y) + x;
         while (true) {
             // fill with the color
-            image.setPixel(x, y, fillColour);
+            image.setPixel(rFillLoc, y, fillColour);
             // indicate that this pixel has already been checked and filled
             pixelsChecked[pxIdx] = true;
             // increment
             rFillLoc++; // increment counter
             pxIdx++; // increment pixel index
             // exit loop if we're at edge of bitmap or color area
-            if (rFillLoc >= width || pixelsChecked[pxIdx] || !checkPixel(image.getPixel(x, y)))
+            if (rFillLoc >= width || pixelsChecked[pxIdx] || !checkPixel(image.getPixel(rFillLoc, y)))
                 break;
         }
         rFillLoc--;

@@ -23,12 +23,8 @@ public class FloodFillThread extends Thread {
 
     @Override
     public void run() {
-        // QueueLinearFloodFiller filler = new QueueLinearFloodFiller(mBitmap, mTargetColor, mNewColor);
-        QueueLinearFloodFiller filler = new QueueLinearFloodFiller(mBitmap);
-        filler.setFillColour(mNewColor);
-        filler.setTolerance(10);
-
-        filler.floodFill(mPoint.x, mPoint.y);
+        FloodFiller ff = new FloodFiller(mBitmap, mNewColor, 0);
+        ff.floodFill(new Point(mPoint.x, mPoint.y));
 
         handler.sendEmptyMessage(0);
     }
