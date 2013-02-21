@@ -13,6 +13,8 @@ import pl.android.androidpaint.enums.Sizes;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,7 +44,7 @@ public class PaintActivity extends Activity {
     private int lastSize;
 
     private void about() {
-
+        showMessage(":-)");
     }
 
     public void doCircle(View view) {
@@ -290,9 +292,19 @@ public class PaintActivity extends Activity {
     }
 
     private void showMessage(String message) {
+        String versionName = "";
+
+        try {
+            PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = pinfo.versionName;
+        } catch (NameNotFoundException e) {
+        }
+
         AlertDialog ad = new AlertDialog.Builder(this).create();
         ad.setCancelable(false);
         ad.setMessage(message);
+        ad.setIcon(R.drawable.ic_launcher);
+        ad.setTitle(getResources().getText(R.string.app_name) + " " + versionName);
         ad.setButton(getResources().getText(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
