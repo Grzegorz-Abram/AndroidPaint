@@ -94,7 +94,7 @@ public class PaintActivity extends Activity {
 
     public void doFill(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(getResources().getText(R.string.color));
+        alertDialogBuilder.setTitle(getResources().getText(R.string.fill));
 
         String[] items = new String[] { getResources().getText(R.string.high_tolerance).toString(), getResources().getText(R.string.low_tolerance).toString() };
 
