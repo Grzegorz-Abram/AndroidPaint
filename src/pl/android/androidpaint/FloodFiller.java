@@ -26,8 +26,13 @@ public class FloodFiller {
         this.tolerance = new int[] { tolerance, tolerance, tolerance };
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    private boolean checkPixel(int px) {
+        int red = (px >>> 16) & 0xff;
+        int green = (px >>> 8) & 0xff;
+        int blue = px & 0xff;
+
+        return (red >= (oldColor[0] - tolerance[0]) && red <= (oldColor[0] + tolerance[0]) && green >= (oldColor[1] - tolerance[1])
+                && green <= (oldColor[1] + tolerance[1]) && blue >= (oldColor[2] - tolerance[2]) && blue <= (oldColor[2] + tolerance[2]));
     }
 
     public void floodFill(Point point) {
@@ -66,12 +71,7 @@ public class FloodFiller {
         }
     }
 
-    private boolean checkPixel(int px) {
-        int red = (px >>> 16) & 0xff;
-        int green = (px >>> 8) & 0xff;
-        int blue = px & 0xff;
-
-        return (red >= (oldColor[0] - tolerance[0]) && red <= (oldColor[0] + tolerance[0]) && green >= (oldColor[1] - tolerance[1])
-                && green <= (oldColor[1] + tolerance[1]) && blue >= (oldColor[2] - tolerance[2]) && blue <= (oldColor[2] + tolerance[2]));
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }

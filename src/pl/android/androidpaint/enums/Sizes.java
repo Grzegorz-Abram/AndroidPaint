@@ -1,7 +1,6 @@
 package pl.android.androidpaint.enums;
 
 import pl.android.androidpaint.R;
-import pl.android.androidpaint.R.drawable;
 
 public enum Sizes implements CharSequence {
     SMALL("Small", 2, R.drawable.pencil),

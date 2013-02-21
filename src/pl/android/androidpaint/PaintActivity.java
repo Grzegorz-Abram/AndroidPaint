@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import pl.android.androidpaint.enums.Colors;
 import pl.android.androidpaint.enums.Figures;
 import pl.android.androidpaint.enums.Sizes;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
