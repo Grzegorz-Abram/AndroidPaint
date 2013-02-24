@@ -10,6 +10,7 @@ public enum Colors {
     BLUE(R.string.blue, Color.BLUE),
     CYAN(R.string.cyan, Color.CYAN),
     MAGENTA(R.string.magenta, Color.MAGENTA),
+    YELLOW(R.string.yellow, Color.YELLOW),
     BLACK(R.string.black, Color.BLACK);
 
     private Integer resId;
