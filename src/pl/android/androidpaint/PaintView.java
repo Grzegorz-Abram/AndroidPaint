@@ -308,8 +308,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder arg0) {
-        thread.setRunning(true);
-        thread.start();
+    	if (thread.getState() == Thread.State.NEW) {
+	        thread.setRunning(true);
+	        thread.start();
+    	}
     }
 
     @Override

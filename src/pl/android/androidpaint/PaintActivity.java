@@ -13,6 +13,7 @@ import pl.android.androidpaint.enums.Sizes;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
@@ -29,6 +30,8 @@ import android.view.View;
 import android.widget.Button;
 
 public class PaintActivity extends Activity {
+	
+	public final static String EXTRA_MESSAGE = "pl.android.androidpaint.MESSAGE";
 
     private PaintView paintView;
     private Button button_color;
@@ -62,25 +65,34 @@ public class PaintActivity extends Activity {
     }
 
     public void doColor(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(getResources().getText(R.string.color));
-
-        StringBuffer[] items = new StringBuffer[Colors.values().length];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = Colors.values()[i].getDescription(getResources());
-        }
-
-        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                lastColor = Colors.values()[item].getColor();
-                paintView.setColor(lastColor);
-                button_color.setTextColor(lastColor);
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+    	boolean old = false;
+    	
+    	if (old) {
+	        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+	        alertDialogBuilder.setTitle(getResources().getText(R.string.color));
+	
+	        StringBuffer[] items = new StringBuffer[Colors.values().length];
+	        for (int i = 0; i < items.length; i++) {
+	            items[i] = Colors.values()[i].getDescription(getResources());
+	        }
+	
+	        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+	            @Override
+	            public void onClick(DialogInterface dialog, int item) {
+	                lastColor = Colors.values()[item].getColor();
+	                paintView.setColor(lastColor);
+	                button_color.setTextColor(lastColor);
+	            }
+	        });
+	
+	        AlertDialog alertDialog = alertDialogBuilder.create();
+	        alertDialog.show();
+    	} else {
+    		Intent intent = new Intent(this, ColorActivity.class);
+    	    String message = "Wybierz kolor";
+    	    intent.putExtra(EXTRA_MESSAGE, message);
+    	    startActivity(intent);
+    	}
     }
 
     public void doEraser(View view) {

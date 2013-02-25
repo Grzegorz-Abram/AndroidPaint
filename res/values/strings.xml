@@ -36,5 +36,9 @@
     <string name="high_tolerance">High tolerance</string>
     <string name="low_tolerance">Low tolerance</string>
     <string name="exit">Exit</string>
+    <string name="title_activity_color">ColorActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
