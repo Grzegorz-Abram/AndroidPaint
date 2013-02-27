@@ -1,10 +1,11 @@
-package pl.android.androidpaint;
 
-import java.util.LinkedList;
-import java.util.Queue;
+package pl.android.androidpaint;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class FloodFiller {
     private Bitmap bitmap;
@@ -15,15 +16,23 @@ public class FloodFiller {
     public FloodFiller(Bitmap bitmap, int newColor) {
         this.bitmap = bitmap;
         this.newColor = newColor;
-        this.oldColor = new int[] { 0, 0, 0 };
-        this.tolerance = new int[] { 0, 0, 0 };
+        this.oldColor = new int[] {
+                0, 0, 0
+        };
+        this.tolerance = new int[] {
+                0, 0, 0
+        };
     }
 
     public FloodFiller(Bitmap bitmap, int newColor, int tolerance) {
         this.bitmap = bitmap;
         this.newColor = newColor;
-        this.oldColor = new int[] { 0, 0, 0 };
-        this.tolerance = new int[] { tolerance, tolerance, tolerance };
+        this.oldColor = new int[] {
+                0, 0, 0
+        };
+        this.tolerance = new int[] {
+                tolerance, tolerance, tolerance
+        };
     }
 
     private boolean checkPixel(int px) {
@@ -31,7 +40,8 @@ public class FloodFiller {
         int green = (px >>> 8) & 0xff;
         int blue = px & 0xff;
 
-        return (red >= (oldColor[0] - tolerance[0]) && red <= (oldColor[0] + tolerance[0]) && green >= (oldColor[1] - tolerance[1])
+        return (red >= (oldColor[0] - tolerance[0]) && red <= (oldColor[0] + tolerance[0])
+                && green >= (oldColor[1] - tolerance[1])
                 && green <= (oldColor[1] + tolerance[1]) && blue >= (oldColor[2] - tolerance[2]) && blue <= (oldColor[2] + tolerance[2]));
     }
 
@@ -59,10 +69,12 @@ public class FloodFiller {
                     } else if (spanUp && y > 0 && !checkPixel(bitmap.getPixel(x, y - 1))) {
                         spanUp = false;
                     }
-                    if (!spanDown && y < bitmap.getHeight() - 1 && checkPixel(bitmap.getPixel(x, y + 1))) {
+                    if (!spanDown && y < bitmap.getHeight() - 1
+                            && checkPixel(bitmap.getPixel(x, y + 1))) {
                         queue.add(new Point(x, y + 1));
                         spanDown = true;
-                    } else if (spanDown && y < bitmap.getHeight() - 1 && !checkPixel(bitmap.getPixel(x, y + 1))) {
+                    } else if (spanDown && y < bitmap.getHeight() - 1
+                            && !checkPixel(bitmap.getPixel(x, y + 1))) {
                         spanDown = false;
                     }
                     x++;

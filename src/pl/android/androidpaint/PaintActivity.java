@@ -1,15 +1,6 @@
+
 package pl.android.androidpaint;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Locale;
-
-import pl.android.androidpaint.enums.Colors;
-import pl.android.androidpaint.enums.Figures;
-import pl.android.androidpaint.enums.Sizes;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -29,9 +20,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import pl.android.androidpaint.enums.Colors;
+import pl.android.androidpaint.enums.Figures;
+import pl.android.androidpaint.enums.Sizes;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Locale;
+
 public class PaintActivity extends Activity {
-	
-	public final static String EXTRA_MESSAGE = "pl.android.androidpaint.MESSAGE";
+
+    public final static String MESSAGE = "pl.android.androidpaint.MESSAGE";
 
     private PaintView paintView;
     private Button button_color;
@@ -65,34 +67,34 @@ public class PaintActivity extends Activity {
     }
 
     public void doColor(View view) {
-    	boolean old = false;
-    	
-    	if (old) {
-	        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-	        alertDialogBuilder.setTitle(getResources().getText(R.string.color));
-	
-	        StringBuffer[] items = new StringBuffer[Colors.values().length];
-	        for (int i = 0; i < items.length; i++) {
-	            items[i] = Colors.values()[i].getDescription(getResources());
-	        }
-	
-	        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
-	            @Override
-	            public void onClick(DialogInterface dialog, int item) {
-	                lastColor = Colors.values()[item].getColor();
-	                paintView.setColor(lastColor);
-	                button_color.setTextColor(lastColor);
-	            }
-	        });
-	
-	        AlertDialog alertDialog = alertDialogBuilder.create();
-	        alertDialog.show();
-    	} else {
-    		Intent intent = new Intent(this, ColorActivity.class);
-    	    String message = "Wybierz kolor";
-    	    intent.putExtra(EXTRA_MESSAGE, message);
-    	    startActivity(intent);
-    	}
+        boolean old = false;
+
+        if (old) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle(getResources().getText(R.string.color));
+
+            StringBuffer[] items = new StringBuffer[Colors.values().length];
+            for (int i = 0; i < items.length; i++) {
+                items[i] = Colors.values()[i].getDescription(getResources());
+            }
+
+            alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    lastColor = Colors.values()[item].getColor();
+                    paintView.setColor(lastColor);
+                    button_color.setTextColor(lastColor);
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        } else {
+            Intent intent = new Intent(this, ColorActivity.class);
+            String message = "Wybierz kolor";
+            intent.putExtra(MESSAGE, message);
+            startActivity(intent);
+        }
     }
 
     public void doEraser(View view) {
@@ -108,17 +110,22 @@ public class PaintActivity extends Activity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(getResources().getText(R.string.fill));
 
-        String[] items = new String[] { getResources().getText(R.string.high_tolerance).toString(), getResources().getText(R.string.low_tolerance).toString() };
+        String[] items = new String[] {
+                getResources().getText(R.string.high_tolerance).toString(),
+                getResources().getText(R.string.low_tolerance).toString()
+        };
 
         alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
                     paintView.setTolerance(128);
-                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_high, 0, 0);
+                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_high, 0,
+                            0);
                 } else {
                     paintView.setTolerance(0);
-                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0, 0);
+                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0,
+                            0);
                 }
 
                 paintView.setFigure(Figures.FILL);
@@ -156,15 +163,18 @@ public class PaintActivity extends Activity {
 
     public void doOpen(View view) {
         try {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getResources().getText(R.string.screenshot_name)
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+                    + getResources().getText(R.string.screenshot_name)
                     + getResources().getText(R.string.screenshot_extension);
             Bitmap bitmap = BitmapFactory.decodeFile(path);
 
             if (bitmap == null) {
-                throw new Exception(getResources().getText(R.string.error_opening_image) + "\n" + path);
+                throw new Exception(getResources().getText(R.string.error_opening_image) + "\n"
+                        + path);
             }
 
-            bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(), true);
+            bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(),
+                    true);
 
             paintView.undo(Integer.MAX_VALUE);
             updateUndoButton();
@@ -196,10 +206,12 @@ public class PaintActivity extends Activity {
     }
 
     public void doSave(View view) {
-        Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(),
+                Bitmap.Config.ARGB_8888);
         paintView.draw(new Canvas(bitmap));
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + getResources().getText(R.string.screenshot_name)
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+                + getResources().getText(R.string.screenshot_name)
                 + getResources().getText(R.string.screenshot_extension);
         File file = new File(path);
 
@@ -207,10 +219,12 @@ public class PaintActivity extends Activity {
             file.createNewFile();
             OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
 
-            if (getResources().getText(R.string.screenshot_extension).toString().toUpperCase(Locale.US).endsWith("JPG")) {
+            if (getResources().getText(R.string.screenshot_extension).toString()
+                    .toUpperCase(Locale.US).endsWith("JPG")) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             } else {
-                throw new IOException((getResources().getText(R.string.error_saving_image)) + "\n" + path);
+                throw new IOException((getResources().getText(R.string.error_saving_image)) + "\n"
+                        + path);
             }
 
             showMessage(getResources().getText(R.string.message_saving_image) + "\n" + path);
@@ -233,7 +247,8 @@ public class PaintActivity extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 lastSize = Sizes.values()[item].getSize();
                 paintView.setSize(lastSize);
-                button_size.setCompoundDrawablesWithIntrinsicBounds(0, Sizes.values()[item].getIcon(), 0, 0);
+                button_size.setCompoundDrawablesWithIntrinsicBounds(0,
+                        Sizes.values()[item].getIcon(), 0, 0);
             }
         });
 
@@ -300,12 +315,12 @@ public class PaintActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-        case R.id.menu_about:
-            about();
-            break;
-        case R.id.menu_exit:
-            exit();
-            break;
+            case R.id.menu_about:
+                about();
+                break;
+            case R.id.menu_exit:
+                exit();
+                break;
         }
 
         return true;
@@ -335,6 +350,7 @@ public class PaintActivity extends Activity {
     }
 
     private void updateUndoButton() {
-        button_undo.setText(getResources().getText(R.string.undo) + " (" + paintView.getHistorySteps() + ")");
+        button_undo.setText(getResources().getText(R.string.undo) + " ("
+                + paintView.getHistorySteps() + ")");
     }
 }

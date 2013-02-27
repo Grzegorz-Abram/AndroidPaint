@@ -1,8 +1,10 @@
+
 package pl.android.androidpaint;
 
-import pl.android.androidpaint.enums.Figures;
 import android.graphics.Path;
 import android.graphics.RectF;
+
+import pl.android.androidpaint.enums.Figures;
 
 public class FiguresToDraw {
     private float left;

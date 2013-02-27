@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="colors_array">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Cyan</item>
+        <item>Magenta</item>
+        <item>Yellow</item>
+        <item>Black</item>
+    </string-array>
+    
     <string name="app_name">Android Paint</string>
     <string name="pencil">Pencil</string>
     <string name="color">Color</string>

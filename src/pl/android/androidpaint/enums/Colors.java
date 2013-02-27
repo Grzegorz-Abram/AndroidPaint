@@ -1,8 +1,10 @@
+
 package pl.android.androidpaint.enums;
 
-import pl.android.androidpaint.R;
 import android.content.res.Resources;
 import android.graphics.Color;
+
+import pl.android.androidpaint.R;
 
 public enum Colors {
     RED(R.string.red, Color.RED),

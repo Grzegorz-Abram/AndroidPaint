@@ -1,8 +1,6 @@
+
 package pl.android.androidpaint;
 
-import java.util.ArrayList;
-
-import pl.android.androidpaint.enums.Figures;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,6 +13,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
+
+import pl.android.androidpaint.enums.Figures;
+
+import java.util.ArrayList;
 
 public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -71,26 +73,28 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             paint.setStrokeJoin(Paint.Join.ROUND);
 
             switch (figure.getFigure()) {
-            case RECTANGLE:
-                paint.setStrokeWidth(figure.getSize() * 2);
-                paint.setStyle(Style.STROKE);
-                canvas.drawRect(figure.getLeft(), figure.getTop(), figure.getRight(), figure.getBottom(), paint);
-                break;
-            case CIRCLE:
-                paint.setStrokeWidth(figure.getSize() * 2);
-                paint.setStyle(Style.STROKE);
-                canvas.drawCircle(figure.getCircleX(), figure.getCircleY(), figure.getCircleRadius(), paint);
-                break;
-            case LINE:
-                paint.setStrokeWidth(figure.getSize() * 2);
-                paint.setStyle(Style.FILL);
-                canvas.drawLines(figure.getPts(), paint);
-                break;
-            case POINT:
-                paint.setStrokeWidth(figure.getSize() * 2);
-                paint.setStyle(Style.STROKE);
-                canvas.drawPath(figure.getPath(), paint);
-                break;
+                case RECTANGLE:
+                    paint.setStrokeWidth(figure.getSize() * 2);
+                    paint.setStyle(Style.STROKE);
+                    canvas.drawRect(figure.getLeft(), figure.getTop(), figure.getRight(),
+                            figure.getBottom(), paint);
+                    break;
+                case CIRCLE:
+                    paint.setStrokeWidth(figure.getSize() * 2);
+                    paint.setStyle(Style.STROKE);
+                    canvas.drawCircle(figure.getCircleX(), figure.getCircleY(),
+                            figure.getCircleRadius(), paint);
+                    break;
+                case LINE:
+                    paint.setStrokeWidth(figure.getSize() * 2);
+                    paint.setStyle(Style.FILL);
+                    canvas.drawLines(figure.getPts(), paint);
+                    break;
+                case POINT:
+                    paint.setStrokeWidth(figure.getSize() * 2);
+                    paint.setStyle(Style.STROKE);
+                    canvas.drawPath(figure.getPath(), paint);
+                    break;
             }
         }
     }
@@ -120,26 +124,29 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                 paintTemp.setStrokeJoin(Paint.Join.ROUND);
 
                 switch (this.figure) {
-                case RECTANGLE:
-                    paintTemp.setStrokeWidth(this.size * 2);
-                    paintTemp.setStyle(Style.STROKE);
-                    canvas.drawRect(this.rectLeft, this.rectTop, this.rectRight, this.rectBottom, paintTemp);
-                    break;
-                case CIRCLE:
-                    paintTemp.setStrokeWidth(this.size * 2);
-                    paintTemp.setStyle(Style.STROKE);
-                    canvas.drawCircle(this.circleX, this.circleY, this.circleRadius, paintTemp);
-                    break;
-                case LINE:
-                    paintTemp.setStrokeWidth(this.size * 2);
-                    paintTemp.setStyle(Style.FILL);
-                    canvas.drawLines(new float[] { this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY }, paintTemp);
-                    break;
-                case POINT:
-                    paintTemp.setStrokeWidth(this.size * 2);
-                    paintTemp.setStyle(Style.STROKE);
-                    canvas.drawPath(this.path, paintTemp);
-                    break;
+                    case RECTANGLE:
+                        paintTemp.setStrokeWidth(this.size * 2);
+                        paintTemp.setStyle(Style.STROKE);
+                        canvas.drawRect(this.rectLeft, this.rectTop, this.rectRight,
+                                this.rectBottom, paintTemp);
+                        break;
+                    case CIRCLE:
+                        paintTemp.setStrokeWidth(this.size * 2);
+                        paintTemp.setStyle(Style.STROKE);
+                        canvas.drawCircle(this.circleX, this.circleY, this.circleRadius, paintTemp);
+                        break;
+                    case LINE:
+                        paintTemp.setStrokeWidth(this.size * 2);
+                        paintTemp.setStyle(Style.FILL);
+                        canvas.drawLines(new float[] {
+                                this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY
+                        }, paintTemp);
+                        break;
+                    case POINT:
+                        paintTemp.setStrokeWidth(this.size * 2);
+                        paintTemp.setStyle(Style.STROKE);
+                        canvas.drawPath(this.path, paintTemp);
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -149,106 +156,113 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (this.figure) {
-        case POINT:
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                path = new Path();
-                path.moveTo(event.getX(), event.getY());
-                path.lineTo(event.getX() + 1, event.getY() + 1);
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                path.lineTo(event.getX(), event.getY());
+            case POINT:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    path = new Path();
+                    path.moveTo(event.getX(), event.getY());
+                    path.lineTo(event.getX() + 1, event.getY() + 1);
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    path.lineTo(event.getX(), event.getY());
 
-                drawing = true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                path.lineTo(event.getX(), event.getY());
+                    drawing = true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    path.lineTo(event.getX(), event.getY());
 
-                figures.add(new FiguresToDraw(path, this.color, this.size));
+                    figures.add(new FiguresToDraw(path, this.color, this.size));
 
-                drawing = false;
-            }
-
-            break;
-        case LINE:
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                this.lineStartX = event.getX();
-                this.lineStartY = event.getY();
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                this.lineStopX = event.getX();
-                this.lineStopY = event.getY();
-
-                drawing = true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                this.lineStopX = event.getX();
-                this.lineStopY = event.getY();
-
-                figures.add(new FiguresToDraw(new float[] { this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY }, this.color, this.size));
-
-                drawing = false;
-            }
-
-            break;
-        case CIRCLE:
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                this.circleStartX = event.getX();
-                this.circleStartY = event.getY();
-                this.circleRadius = 1;
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                this.circleStopX = event.getX();
-                this.circleStopY = event.getY();
-                this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
-                this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
-                this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2) + Math.pow(this.circleY - event.getY(), 2));
-
-                drawing = true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                this.circleStopX = event.getX();
-                this.circleStopY = event.getY();
-                this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
-                this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
-                this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2) + Math.pow(this.circleY - event.getY(), 2));
-
-                figures.add(new FiguresToDraw(this.circleX, this.circleY, this.circleRadius, this.color, this.size));
-
-                drawing = false;
-            }
-
-            break;
-        case RECTANGLE:
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                this.rectLeft = event.getX();
-                this.rectTop = event.getY();
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                this.rectRight = event.getX();
-                this.rectBottom = event.getY();
-
-                drawing = true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                this.rectRight = event.getX();
-                this.rectBottom = event.getY();
-
-                figures.add(new FiguresToDraw(this.rectLeft, this.rectTop, this.rectRight, this.rectBottom, this.color, this.size));
-
-                drawing = false;
-            }
-
-            break;
-        case FILL:
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                while (figures.size() > 0) {
-                    figuresToFlat.add(figures.remove(0));
+                    drawing = false;
                 }
 
-                Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-                draw(new Canvas(bitmap));
-                this.bitmap = bitmap;
+                break;
+            case LINE:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    this.lineStartX = event.getX();
+                    this.lineStartY = event.getY();
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    this.lineStopX = event.getX();
+                    this.lineStopY = event.getY();
 
-                figuresToFlat.clear();
+                    drawing = true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    this.lineStopX = event.getX();
+                    this.lineStopY = event.getY();
 
-                FloodFiller ff = new FloodFiller(bitmap, this.color, this.tolerance);
-                ff.floodFill(new Point((int) event.getX(), (int) event.getY()));
-                this.bitmap = ff.getBitmap();
-            }
+                    figures.add(new FiguresToDraw(new float[] {
+                            this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY
+                    }, this.color, this.size));
 
-            break;
+                    drawing = false;
+                }
+
+                break;
+            case CIRCLE:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    this.circleStartX = event.getX();
+                    this.circleStartY = event.getY();
+                    this.circleRadius = 1;
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    this.circleStopX = event.getX();
+                    this.circleStopY = event.getY();
+                    this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
+                    this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
+                    this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2)
+                            + Math.pow(this.circleY - event.getY(), 2));
+
+                    drawing = true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    this.circleStopX = event.getX();
+                    this.circleStopY = event.getY();
+                    this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
+                    this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
+                    this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2)
+                            + Math.pow(this.circleY - event.getY(), 2));
+
+                    figures.add(new FiguresToDraw(this.circleX, this.circleY, this.circleRadius,
+                            this.color, this.size));
+
+                    drawing = false;
+                }
+
+                break;
+            case RECTANGLE:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    this.rectLeft = event.getX();
+                    this.rectTop = event.getY();
+                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    this.rectRight = event.getX();
+                    this.rectBottom = event.getY();
+
+                    drawing = true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    this.rectRight = event.getX();
+                    this.rectBottom = event.getY();
+
+                    figures.add(new FiguresToDraw(this.rectLeft, this.rectTop, this.rectRight,
+                            this.rectBottom, this.color, this.size));
+
+                    drawing = false;
+                }
+
+                break;
+            case FILL:
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    while (figures.size() > 0) {
+                        figuresToFlat.add(figures.remove(0));
+                    }
+
+                    Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(),
+                            Bitmap.Config.ARGB_8888);
+                    draw(new Canvas(bitmap));
+                    this.bitmap = bitmap;
+
+                    figuresToFlat.clear();
+
+                    FloodFiller ff = new FloodFiller(bitmap, this.color, this.tolerance);
+                    ff.floodFill(new Point((int) event.getX(), (int) event.getY()));
+                    this.bitmap = ff.getBitmap();
+                }
+
+                break;
         }
 
         if (figures.size() > historySteps) {
@@ -308,10 +322,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder arg0) {
-    	if (thread.getState() == Thread.State.NEW) {
-	        thread.setRunning(true);
-	        thread.start();
-    	}
+        if (thread.getState() == Thread.State.NEW) {
+            thread.setRunning(true);
+            thread.start();
+        }
     }
 
     @Override
@@ -345,7 +359,8 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void updateUndoButton() {
         if (button_undo != null) {
-            button_undo.setText(getResources().getText(R.string.undo) + " (" + getHistorySteps() + ")");
+            button_undo.setText(getResources().getText(R.string.undo) + " (" + getHistorySteps()
+                    + ")");
         }
     }
 }

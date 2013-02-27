@@ -1,7 +1,9 @@
+
 package pl.android.androidpaint.enums;
 
-import pl.android.androidpaint.R;
 import android.content.res.Resources;
+
+import pl.android.androidpaint.R;
 
 public enum Sizes {
     SMALL(R.string.small, 2, R.drawable.pencil),

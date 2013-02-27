@@ -1,3 +1,4 @@
+
 package pl.android.androidpaint;
 
 import android.graphics.Canvas;
