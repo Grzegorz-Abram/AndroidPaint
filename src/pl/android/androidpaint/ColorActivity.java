@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 public class ColorActivity extends Activity {
 
     public final static String COLOR_RETURN = "pl.android.androidpaint.COLOR_RETURN";
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class ColorActivity extends Activity {
         TextView textView = (TextView) findViewById(R.id.textView1);
         textView.setText(message);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+        spinner = (Spinner) findViewById(R.id.spinner1);
         // Create an ArrayAdapter using the string array and a default spinner
         // layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -44,4 +46,15 @@ public class ColorActivity extends Activity {
         return true;
     }
 
+    public void doCancel(View view) {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
+
+    public void doOk(View view) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("kolor", spinner.getSelectedItem().toString());
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
 }
