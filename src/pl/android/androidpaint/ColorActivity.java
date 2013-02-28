@@ -15,6 +15,18 @@ public class ColorActivity extends Activity {
     public final static String COLOR_RETURN = "pl.android.androidpaint.COLOR_RETURN";
     private Spinner spinner;
 
+    public void doCancel(View view) {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
+
+    public void doOk(View view) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("kolor", spinner.getSelectedItem().toString());
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +56,5 @@ public class ColorActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         // getMenuInflater().inflate(R.menu.color, menu);
         return true;
-    }
-
-    public void doCancel(View view) {
-        setResult(Activity.RESULT_CANCELED);
-        finish();
-    }
-
-    public void doOk(View view) {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("kolor", spinner.getSelectedItem().toString());
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
     }
 }

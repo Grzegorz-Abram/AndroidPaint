@@ -8,16 +8,13 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,20 +97,6 @@ public class PaintActivity extends Activity {
             intent.putExtra(MESSAGE, message);
             startActivity(intent);
             startActivityForResult(intent, PICK_COLOR_REQUEST_SUCCESS);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_COLOR_REQUEST_SUCCESS) {
-            if (resultCode == RESULT_OK) {
-                String kolor = data.getStringExtra("kolor");
-                int color = new Color().parseColor(kolor.toLowerCase());
-
-                lastColor = color;
-                paintView.setColor(lastColor);
-                button_color.setTextColor(lastColor);
-            }
         }
     }
 
@@ -284,6 +267,21 @@ public class PaintActivity extends Activity {
     private void exit() {
         finish();
         System.exit(0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_COLOR_REQUEST_SUCCESS) {
+            if (resultCode == RESULT_OK) {
+                String kolor = data.getStringExtra("kolor");
+                new Color();
+                int color = Color.parseColor(kolor.toLowerCase());
+
+                lastColor = color;
+                paintView.setColor(lastColor);
+                button_color.setTextColor(lastColor);
+            }
+        }
     }
 
     @Override
