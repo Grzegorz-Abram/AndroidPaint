@@ -14,10 +14,12 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
-
 import pl.android.androidpaint.enums.Figures;
 
 import java.util.ArrayList;
+
+import static java.lang.Math.sqrt;
+import static java.lang.Math.pow;
 
 public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -100,93 +102,47 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (this.figure) {
-            case POINT:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    path = new Path();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                this.startX = event.getX();
+                this.startY = event.getY();
+
+                path = new Path();
+
+                if (this.figure == Figures.POINT) {
                     path.moveTo(event.getX(), event.getY());
                     path.lineTo(event.getX() + 1, event.getY() + 1);
-                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    path.lineTo(event.getX(), event.getY());
-
-                    drawing = true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    figures.add(new FiguresToDraw(path, this.color, this.size));
-
-                    drawing = false;
                 }
-
                 break;
-            case LINE:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    this.startX = event.getX();
-                    this.startY = event.getY();
-
-                    path = new Path();
-                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            case MotionEvent.ACTION_MOVE:
+                if (this.figure != Figures.POINT) {
                     path.reset();
                     path.moveTo(this.startX, this.startY);
-                    path.lineTo(event.getX(), event.getY());
-
-                    drawing = true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    figures.add(new FiguresToDraw(path, this.color, this.size));
-
-                    drawing = false;
                 }
 
-                break;
-            case CIRCLE:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    this.startX = event.getX();
-                    this.startY = event.getY();
-
-                    path = new Path();
-                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    path.reset();
-                    path.moveTo(this.startX, this.startY);
-                    path.addCircle(
-                            this.startX + (event.getX() - this.startX) / 2,
-                            this.startY + (event.getY() - this.startY) / 2,
-                            (float) Math
-                                    .sqrt(Math.pow(
-                                            (this.startX + (event.getX() - this.startX) / 2)
-                                                    - event.getX(),
-                                            2)
-                                            + Math.pow(
-                                                    (this.startY + (event.getY() - this.startY) / 2)
-                                                            - event.getY(), 2)), Direction.CW);
-
-                    drawing = true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    figures.add(new FiguresToDraw(path, this.color, this.size));
-
-                    drawing = false;
+                switch (this.figure) {
+                    case POINT:
+                    case LINE:
+                        path.lineTo(event.getX(), event.getY());
+                        break;
+                    case CIRCLE:
+                        path.addCircle(
+                                this.startX / 2 + event.getX() / 2,
+                                this.startY / 2 + event.getY() / 2,
+                                (float) sqrt(pow(this.startX / 2 - event.getX() / 2, 2)
+                                        + pow(this.startY / 2 - event.getY() / 2, 2)),
+                                Direction.CW);
+                        break;
+                    case RECTANGLE:
+                        path.addRect(this.startX, this.startY, event.getX(), event.getY(),
+                                Direction.CW);
+                        break;
                 }
 
+                drawing = true;
                 break;
-            case RECTANGLE:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    this.startX = event.getX();
-                    this.startY = event.getY();
-
-                    path = new Path();
-                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    path.reset();
-                    path.moveTo(this.startX, this.startY);
-                    path.addRect(this.startX, this.startY, event.getX(),
-                            event.getY(), Direction.CW);
-
-                    drawing = true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    figures.add(new FiguresToDraw(path, this.color, this.size));
-
-                    drawing = false;
-                }
-
-                break;
-            case FILL:
-                if (event.getAction() == MotionEvent.ACTION_UP) {
+            case MotionEvent.ACTION_UP:
+                if (this.figure == Figures.FILL) {
                     while (figures.size() > 0) {
                         figuresToFlat.add(figures.remove(0));
                     }
@@ -201,8 +157,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                     FloodFiller ff = new FloodFiller(bitmap, this.color, this.tolerance);
                     ff.floodFill(new Point((int) event.getX(), (int) event.getY()));
                     this.bitmap = ff.getBitmap();
+                } else {
+                    figures.add(new FiguresToDraw(path, this.color, this.size));
+                    drawing = false;
                 }
-
                 break;
         }
 
