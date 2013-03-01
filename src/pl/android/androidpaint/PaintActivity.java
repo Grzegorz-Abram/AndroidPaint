@@ -33,9 +33,8 @@ import java.util.Locale;
 
 public class PaintActivity extends Activity {
 
-    public static final String MESSAGE = "pl.android.androidpaint.MESSAGE";
-    public static final int PICK_COLOR_REQUEST_SUCCESS = 1;
-    public static final int PICK_COLOR_REQUEST_FALSE = 0;
+    public static final String LAST_COLOR = "pl.android.androidpaint.LAST_COLOR";
+    public static final int PICK_COLOR_REQUEST = 1;
 
     private PaintView paintView;
     private Button button_color;
@@ -69,35 +68,9 @@ public class PaintActivity extends Activity {
     }
 
     public void doColor(View view) {
-        boolean old = false;
-
-        if (old) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle(getResources().getText(R.string.color));
-
-            StringBuffer[] items = new StringBuffer[Colors.values().length];
-            for (int i = 0; i < items.length; i++) {
-                items[i] = Colors.values()[i].getDescription(getResources());
-            }
-
-            alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-                    lastColor = Colors.values()[item].getColor();
-                    paintView.setColor(lastColor);
-                    button_color.setTextColor(lastColor);
-                }
-            });
-
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        } else {
-            Intent intent = new Intent(this, ColorActivity.class);
-            String message = "Wybierz kolor";
-            intent.putExtra(MESSAGE, message);
-            startActivity(intent);
-            startActivityForResult(intent, PICK_COLOR_REQUEST_SUCCESS);
-        }
+        Intent intent = new Intent(this, ColorActivity.class);
+        intent.putExtra(LAST_COLOR, lastColor);
+        startActivityForResult(intent, PICK_COLOR_REQUEST);
     }
 
     public void doEraser(View view) {
@@ -271,13 +244,9 @@ public class PaintActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_COLOR_REQUEST_SUCCESS) {
+        if (requestCode == PICK_COLOR_REQUEST) {
             if (resultCode == RESULT_OK) {
-                String kolor = data.getStringExtra("kolor");
-                new Color();
-                int color = Color.parseColor(kolor.toLowerCase());
-
-                lastColor = color;
+                lastColor = Color.parseColor(data.getStringExtra("kolor"));
                 paintView.setColor(lastColor);
                 button_color.setTextColor(lastColor);
             }
