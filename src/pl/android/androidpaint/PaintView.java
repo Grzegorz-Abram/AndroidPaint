@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.Path.Direction;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -28,21 +29,8 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     private int color;
     private int size;
     private Figures figure;
-    private float lineStartX;
-    private float lineStartY;
-    private float lineStopX;
-    private float lineStopY;
-    private float circleX;
-    private float circleY;
-    private float circleRadius;
-    private float rectLeft;
-    private float rectTop;
-    private float rectRight;
-    private float rectBottom;
-    private float circleStartX;
-    private float circleStartY;
-    private float circleStopX;
-    private float circleStopY;
+    private float startX;
+    private float startY;
     private Bitmap bitmap;
     private Path path;
     private boolean drawing = false;
@@ -71,31 +59,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
             paint.setColor(figure.getColor());
             paint.setStrokeCap(Paint.Cap.ROUND);
             paint.setStrokeJoin(Paint.Join.ROUND);
+            paint.setStrokeWidth(figure.getSize() * 2);
+            paint.setStyle(Style.STROKE);
 
-            switch (figure.getFigure()) {
-                case RECTANGLE:
-                    paint.setStrokeWidth(figure.getSize() * 2);
-                    paint.setStyle(Style.STROKE);
-                    canvas.drawRect(figure.getLeft(), figure.getTop(), figure.getRight(),
-                            figure.getBottom(), paint);
-                    break;
-                case CIRCLE:
-                    paint.setStrokeWidth(figure.getSize() * 2);
-                    paint.setStyle(Style.STROKE);
-                    canvas.drawCircle(figure.getCircleX(), figure.getCircleY(),
-                            figure.getCircleRadius(), paint);
-                    break;
-                case LINE:
-                    paint.setStrokeWidth(figure.getSize() * 2);
-                    paint.setStyle(Style.FILL);
-                    canvas.drawLines(figure.getPts(), paint);
-                    break;
-                case POINT:
-                    paint.setStrokeWidth(figure.getSize() * 2);
-                    paint.setStyle(Style.STROKE);
-                    canvas.drawPath(figure.getPath(), paint);
-                    break;
-            }
+            canvas.drawPath(figure.getPath(), paint);
         }
     }
 
@@ -122,32 +89,10 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                 paintTemp.setColor(this.color);
                 paintTemp.setStrokeCap(Paint.Cap.ROUND);
                 paintTemp.setStrokeJoin(Paint.Join.ROUND);
+                paintTemp.setStrokeWidth(this.size * 2);
+                paintTemp.setStyle(Style.STROKE);
 
-                switch (this.figure) {
-                    case RECTANGLE:
-                        paintTemp.setStrokeWidth(this.size * 2);
-                        paintTemp.setStyle(Style.STROKE);
-                        canvas.drawRect(this.rectLeft, this.rectTop, this.rectRight,
-                                this.rectBottom, paintTemp);
-                        break;
-                    case CIRCLE:
-                        paintTemp.setStrokeWidth(this.size * 2);
-                        paintTemp.setStyle(Style.STROKE);
-                        canvas.drawCircle(this.circleX, this.circleY, this.circleRadius, paintTemp);
-                        break;
-                    case LINE:
-                        paintTemp.setStrokeWidth(this.size * 2);
-                        paintTemp.setStyle(Style.FILL);
-                        canvas.drawLines(new float[] {
-                                this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY
-                        }, paintTemp);
-                        break;
-                    case POINT:
-                        paintTemp.setStrokeWidth(this.size * 2);
-                        paintTemp.setStyle(Style.STROKE);
-                        canvas.drawPath(this.path, paintTemp);
-                        break;
-                }
+                canvas.drawPath(this.path, paintTemp);
             }
         } catch (Exception e) {
         }
@@ -166,8 +111,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
                     drawing = true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    path.lineTo(event.getX(), event.getY());
-
                     figures.add(new FiguresToDraw(path, this.color, this.size));
 
                     drawing = false;
@@ -176,20 +119,18 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case LINE:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    this.lineStartX = event.getX();
-                    this.lineStartY = event.getY();
+                    this.startX = event.getX();
+                    this.startY = event.getY();
+
+                    path = new Path();
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    this.lineStopX = event.getX();
-                    this.lineStopY = event.getY();
+                    path.reset();
+                    path.moveTo(this.startX, this.startY);
+                    path.lineTo(event.getX(), event.getY());
 
                     drawing = true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    this.lineStopX = event.getX();
-                    this.lineStopY = event.getY();
-
-                    figures.add(new FiguresToDraw(new float[] {
-                            this.lineStartX, this.lineStartY, this.lineStopX, this.lineStopY
-                    }, this.color, this.size));
+                    figures.add(new FiguresToDraw(path, this.color, this.size));
 
                     drawing = false;
                 }
@@ -197,28 +138,28 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case CIRCLE:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    this.circleStartX = event.getX();
-                    this.circleStartY = event.getY();
-                    this.circleRadius = 1;
+                    this.startX = event.getX();
+                    this.startY = event.getY();
+
+                    path = new Path();
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    this.circleStopX = event.getX();
-                    this.circleStopY = event.getY();
-                    this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
-                    this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
-                    this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2)
-                            + Math.pow(this.circleY - event.getY(), 2));
+                    path.reset();
+                    path.moveTo(this.startX, this.startY);
+                    path.addCircle(
+                            this.startX + (event.getX() - this.startX) / 2,
+                            this.startY + (event.getY() - this.startY) / 2,
+                            (float) Math
+                                    .sqrt(Math.pow(
+                                            (this.startX + (event.getX() - this.startX) / 2)
+                                                    - event.getX(),
+                                            2)
+                                            + Math.pow(
+                                                    (this.startY + (event.getY() - this.startY) / 2)
+                                                            - event.getY(), 2)), Direction.CW);
 
                     drawing = true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    this.circleStopX = event.getX();
-                    this.circleStopY = event.getY();
-                    this.circleX = this.circleStartX + (this.circleStopX - this.circleStartX) / 2;
-                    this.circleY = this.circleStartY + (this.circleStopY - this.circleStartY) / 2;
-                    this.circleRadius = (float) Math.sqrt(Math.pow(this.circleX - event.getX(), 2)
-                            + Math.pow(this.circleY - event.getY(), 2));
-
-                    figures.add(new FiguresToDraw(this.circleX, this.circleY, this.circleRadius,
-                            this.color, this.size));
+                    figures.add(new FiguresToDraw(path, this.color, this.size));
 
                     drawing = false;
                 }
@@ -226,19 +167,19 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case RECTANGLE:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    this.rectLeft = event.getX();
-                    this.rectTop = event.getY();
+                    this.startX = event.getX();
+                    this.startY = event.getY();
+
+                    path = new Path();
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    this.rectRight = event.getX();
-                    this.rectBottom = event.getY();
+                    path.reset();
+                    path.moveTo(this.startX, this.startY);
+                    path.addRect(this.startX, this.startY, event.getX(),
+                            event.getY(), Direction.CW);
 
                     drawing = true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    this.rectRight = event.getX();
-                    this.rectBottom = event.getY();
-
-                    figures.add(new FiguresToDraw(this.rectLeft, this.rectTop, this.rectRight,
-                            this.rectBottom, this.color, this.size));
+                    figures.add(new FiguresToDraw(path, this.color, this.size));
 
                     drawing = false;
                 }
