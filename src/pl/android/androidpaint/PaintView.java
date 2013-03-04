@@ -122,6 +122,11 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
                 switch (this.figure) {
                     case POINT:
+                        for (int j = 0; j < event.getHistorySize(); j++) {
+                            path.lineTo(event.getHistoricalX(j), event.getHistoricalY(j));
+                        }
+                        path.lineTo(event.getX(), event.getY());
+                        break;
                     case LINE:
                         path.lineTo(event.getX(), event.getY());
                         break;
