@@ -1,6 +1,9 @@
 
 package pl.android.androidpaint;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,12 +16,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+
 import pl.android.androidpaint.enums.Figures;
 
 import java.util.ArrayList;
-
-import static java.lang.Math.sqrt;
-import static java.lang.Math.pow;
 
 public class PaintView extends View {
 
@@ -131,12 +132,10 @@ public class PaintView extends View {
                                 this.startX / 2 + event.getX() / 2,
                                 this.startY / 2 + event.getY() / 2,
                                 (float) sqrt(pow(this.startX / 2 - event.getX() / 2, 2)
-                                        + pow(this.startY / 2 - event.getY() / 2, 2)),
-                                Direction.CW);
+                                        + pow(this.startY / 2 - event.getY() / 2, 2)), Direction.CW);
                         break;
                     case RECTANGLE:
-                        path.addRect(this.startX, this.startY, event.getX(), event.getY(),
-                                Direction.CW);
+                        path.addRect(this.startX, this.startY, event.getX(), event.getY(), Direction.CW);
                         break;
                 }
 
@@ -148,8 +147,7 @@ public class PaintView extends View {
                         figuresToFlat.add(figures.remove(0));
                     }
 
-                    Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(),
-                            Bitmap.Config.ARGB_8888);
+                    Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
                     draw(new Canvas(bitmap));
                     this.bitmap = bitmap;
 
@@ -233,8 +231,7 @@ public class PaintView extends View {
 
     private void updateUndoButton() {
         if (button_undo != null) {
-            button_undo.setText(getResources().getText(R.string.undo) + " (" + getHistorySteps()
-                    + ")");
+            button_undo.setText(getResources().getText(R.string.undo) + " (" + getHistorySteps() + ")");
         }
     }
 }

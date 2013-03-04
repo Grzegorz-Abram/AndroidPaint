@@ -36,8 +36,7 @@ public class ColorActivity extends Activity {
         int lastColor = intent.getIntExtra(PaintActivity.LAST_COLOR, -1);
 
         spinner = (Spinner) findViewById(R.id.spinner1);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.colors_array,
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colors_array,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);

@@ -96,12 +96,10 @@ public class PaintActivity extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
                     paintView.setTolerance(128);
-                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_high, 0,
-                            0);
+                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_high, 0, 0);
                 } else {
                     paintView.setTolerance(0);
-                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0,
-                            0);
+                    button_fill.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.fill_low, 0, 0);
                 }
 
                 paintView.setFigure(Figures.FILL);
@@ -145,12 +143,10 @@ public class PaintActivity extends Activity {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
 
             if (bitmap == null) {
-                throw new Exception(getResources().getText(R.string.error_opening_image) + "\n"
-                        + path);
+                throw new Exception(getResources().getText(R.string.error_opening_image) + "\n" + path);
             }
 
-            bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(),
-                    true);
+            bitmap = Bitmap.createScaledBitmap(bitmap, paintView.getWidth(), paintView.getHeight(), true);
 
             paintView.undo(Integer.MAX_VALUE);
             updateUndoButton();
@@ -182,8 +178,7 @@ public class PaintActivity extends Activity {
     }
 
     public void doSave(View view) {
-        Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(),
-                Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(paintView.getWidth(), paintView.getHeight(), Bitmap.Config.ARGB_8888);
         paintView.draw(new Canvas(bitmap));
 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
@@ -195,12 +190,10 @@ public class PaintActivity extends Activity {
             file.createNewFile();
             OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
 
-            if (getResources().getText(R.string.screenshot_extension).toString()
-                    .toUpperCase(Locale.US).endsWith("JPG")) {
+            if (getResources().getText(R.string.screenshot_extension).toString().toUpperCase(Locale.US).endsWith("JPG")) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
             } else {
-                throw new IOException((getResources().getText(R.string.error_saving_image)) + "\n"
-                        + path);
+                throw new IOException((getResources().getText(R.string.error_saving_image)) + "\n" + path);
             }
 
             showMessage(getResources().getText(R.string.message_saving_image) + "\n" + path);
@@ -223,8 +216,7 @@ public class PaintActivity extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 lastSize = Sizes.values()[item].getSize();
                 paintView.setSize(lastSize);
-                button_size.setCompoundDrawablesWithIntrinsicBounds(0,
-                        Sizes.values()[item].getIcon(), 0, 0);
+                button_size.setCompoundDrawablesWithIntrinsicBounds(0, Sizes.values()[item].getIcon(), 0, 0);
             }
         });
 
@@ -337,7 +329,6 @@ public class PaintActivity extends Activity {
     }
 
     private void updateUndoButton() {
-        button_undo.setText(getResources().getText(R.string.undo) + " ("
-                + paintView.getHistorySteps() + ")");
+        button_undo.setText(getResources().getText(R.string.undo) + " (" + paintView.getHistorySteps() + ")");
     }
 }
