@@ -11,8 +11,7 @@ import android.graphics.Path.Direction;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
 import pl.android.androidpaint.enums.Figures;
 
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.pow;
 
-public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
+public class PaintView extends View {
 
     private ArrayList<FiguresToDraw> figures;
     private ArrayList<FiguresToDraw> figuresToFlat;
@@ -36,7 +35,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap bitmap;
     private Path path;
     private boolean drawing = false;
-    private PaintThread thread;
     private final int historySteps = 10;
     private Button button_undo;
     private int tolerance;
@@ -44,8 +42,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        getHolder().addCallback(this);
-        thread = new PaintThread(getHolder(), this);
         setFocusable(true);
 
         figures = new ArrayList<FiguresToDraw>();
@@ -217,32 +213,6 @@ public class PaintView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setTolerance(int tolerance) {
         this.tolerance = tolerance;
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder arg0) {
-        if (thread.getState() == Thread.State.NEW) {
-            thread.setRunning(true);
-            thread.start();
-        }
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder arg0) {
-        boolean retry = true;
-        thread.setRunning(false);
-        while (retry) {
-            try {
-                thread.join();
-                retry = false;
-            } catch (InterruptedException e) {
-            }
-        }
     }
 
     public void undo(int steps) {
